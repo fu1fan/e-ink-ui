@@ -1,6 +1,7 @@
 import os
 import threading
 import importlib
+import time
 import traceback
 from pathlib import Path
 
@@ -42,7 +43,7 @@ if __name__ == "__main__":
             env.Screen.display_auto(i)
             env.Screen.wait_busy()
         if load_lock.n_waiting == 0:
-            env.Screen.display_auto(Image.open(Path(configurator_main.read("loading_image"))))
+            env.Screen.display_auto(Image.open("resources/images/loading.jpg"))
         load_lock.wait()
 
 
@@ -65,11 +66,13 @@ if __name__ == "__main__":
             print(traceback.format_exc())
 
     # themes
-    for theme_dir in os.listdir("theme"):
+    for theme_dir in os.listdir("themes"):
         try:
             env.themes[theme_dir] = importlib.import_module(f"themes.{theme_dir}.main").Theme(env)
         except:
             print(traceback.format_exc())
+
+    load_lock.wait()
 
     env.now_theme = configurator_main.read("theme")
     env.Now = env.themes[env.now_theme]

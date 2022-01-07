@@ -45,11 +45,11 @@ class Page:
         self.touch_records_clicked = []
         self.touch_records_slide_x = []
         self.touch_records_slide_y = []
-        self.background = Image.new("RGBA", (296, 128), (255, 255, 255, 1))
+        self.background = Image.new("RGB", (296, 128), (255, 255, 255))
         self.elements_rlock = threading.RLock()
         self.touch_records_rlock = threading.RLock()
         self.old_render = self.background
-        self.update = True
+        self._update = True
 
     @staticmethod
     def _get_sort_key_from(element: Element) -> int:
@@ -83,20 +83,20 @@ class Page:
         self.touch_records_rlock.release()
 
     def render(self):
-        if self.update:
+        if self._update:
             new_image = self.background.copy()
             self.elements_rlock.acquire()
             for i in self.elements:
                 new_image.paste(i.render(), i.location)
             self.elements_rlock.release()
             self.old_render = new_image
-            self.update = False
-            return new_image
+            self._update = False
+            return new_image.copy()
         else:
-            return self.old_render
+            return self.old_render.copy()
 
     def update(self):
-        self.update = True
+        self._update = True
         self.book.update(self)
 
 
@@ -234,8 +234,56 @@ class Base:
         self.back_stack.put(item)
 
 
+class AppList(Book):
+    def __init__(self, base):
+        super().__init__(base)
+        self.env = base.env
+        self.index = 0
+
+    def active(self):
+        pass
+
+
 class ThemeBase(Base):
-    pass
+    def __init__(self, env):
+        super().__init__(env)
+        self._docker_image = self.env.images.docker_image
+        self._docker_status = False
+
+        self._inactive_clicked = [Clicked((0, 296, 0, 30), self.set_docker, True)]
+        self._active_clicked = [Clicked((60, 100, 0, 30), self.open_applist),
+                                Clicked((0, 296, 30, 128), self.set_docker, False),
+                                Clicked((195, 235, 0, 30), self.open_setting)]
+
+    def open_applist(self):
+        pass
+
+    def open_setting(self):
+        pass
+
+    def set_docker(self, value: bool):
+        self._docker_status = value
+        self.display()
+        time.sleep(2)
+        if self._docker_status:
+            self._docker_status = False
+            self.display()
+
+    def display(self):
+        if self._active:
+            if self._docker_status:
+                new_image = self.Book.Page.render()
+                new_image.paste(self._docker_image, (60, 0))
+                self.env.Screen.display_auto(new_image)
+            else:
+                self.env.Screen.display_auto(self.Book.render())
+
+    @property
+    def touch_records_clicked(self):
+        if self._docker_status:
+            return self.Book.Page.touch_records_clicked + self._active_clicked
+        else:
+            return self.Book.Page.touch_records_clicked + self._inactive_clicked
 
 
 class AppBase(Base):
@@ -264,11 +312,15 @@ class AppBase(Base):
                 image_draw.text((30, 5), self.title, fill="black", font=self.title_font)
                 image_draw.text((150, 7), time.strftime("%H : %M", time.localtime()), fill="black",
                                 font=self.clock_font)
+                self.env.Screen.display_auto(new_image)
+            else:
+                self.env.Screen.display_auto(self.Book.render())
 
     def set_control_bar(self, value: bool):
         self._control_bar_status = value
         self.display()
 
+    @property
     def touch_records_clicked(self):
         if self._control_bar_status:
             return self.Book.Page.touch_records_clicked + self._active_clicked

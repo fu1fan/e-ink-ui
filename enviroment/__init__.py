@@ -2,21 +2,27 @@ import threading as _threading
 import time
 from queue import LifoQueue as _LifoQueue
 
-from PIL import Image, ImageTk, ImageFont as _Image, _ImageFont, ImageDraw
+# 模拟器GUI wxpython
+
+from PIL import Image as _Image, \
+    ImageFont as _ImageFont, \
+    ImageDraw as _ImageDraw
 from system import threadpool as _threadpool
 from .drivers import epd2in9_V2, icnt86
 from .touchscreen import Clicked as _Clicked, \
     SlideX as _SlideX, \
     SlideY as _SlideY, \
-    TouchHandler as _TouchHandler
+    TouchHandler as _TouchHandler, \
+    TouchRecoder as _TouchRecoder
 import os as _os
 
 
 class Images:
     def __init__(self):
-        self.app_control = Image.open("resources/images/app_control.jpg")
-        self.None18px = Image.open("resources/images/None18px.jpg")
-        self.None20px = Image.open("resources/images/None20px.jpg")
+        self.app_control = _Image.open("resources/images/app_control.jpg")
+        self.None18px = _Image.open("resources/images/None18px.jpg")
+        self.None20px = _Image.open("resources/images/None20px.jpg")
+        self.docker_image = _Image.open("resources/images/docker.jpg")
 
 
 class Env:
