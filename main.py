@@ -71,18 +71,22 @@ if __name__ == "__main__":
     def slideByXYZW(x, y, z, w):
         ac = ActionChains(browser)
         if y>w+10:
-            ac.send_keys(Keys.PAGE_DOWN)
+            ac.send_keys(Keys.DOWN)
+            ac.send_keys(Keys.DOWN)
             print("page down")
         elif y<w-10:
-            ac.send_keys(Keys.PAGE_UP)
+            ac.send_keys(Keys.UP)
+            ac.send_keys(Keys.UP)
             print("page up")
             
         if x>z+10:
             ac.send_keys(Keys.RIGHT)
-            print("right")
+            ac.send_keys(Keys.RIGHT)
+            print("page right")
         elif x<z-10:
             ac.send_keys(Keys.LEFT)
-            print("left")
+            ac.send_keys(Keys.LEFT)
+            print("page left")
         
         ac.perform()
 
