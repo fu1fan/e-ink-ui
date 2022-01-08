@@ -14,7 +14,6 @@ class Env:
     def __init__(self):
         # screen
         self.Screen = epd2in9_V2.Screen()
-        self.Screen.initial()
 
         # touchscreen
         self.Touch = icnt86.TouchDriver()
