@@ -380,7 +380,8 @@ class Screen:
                 if time.time() - self._last_display >= self.auto_sleep_time:
                     self._driver.sleep()
 
-        self.auto_refresh_thread = threading.Thread(target=auto_sleep_methode(), daemon=True)
+        # FIXME：此处有奇怪的bug
+        # self.auto_refresh_thread = threading.Thread(target=auto_sleep_methode(), daemon=True)
 
     def display_auto(self, image):
         if self.refresh_time > self._partial_time:
