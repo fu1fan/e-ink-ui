@@ -363,7 +363,7 @@ class Screen:
         self._driver.init()
         self._last_display = time.time()
 
-        self.auto_sleep_time = 30  # seconds
+        self.auto_sleep_time = 600  # seconds
         self._last_display = 0
 
         self._partial_time = 0  # times
@@ -403,8 +403,8 @@ class Screen:
 
     def display_partial(self, image):
         if not self._status:
-            self._driver.init()
-            self._status = True
+            self.display(image)
+            return
         self._driver.display_partial(self._driver.get_buffer(image))
         self._partial_time += 1
         self._last_display = time.time()
