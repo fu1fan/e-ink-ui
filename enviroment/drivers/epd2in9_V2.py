@@ -369,6 +369,8 @@ class Screen:
         self._partial_time = 0  # times
         self.refresh_time = 10  # times
 
+        self._status = True
+
         self._exit = False
 
         def auto_sleep_methode():
@@ -379,6 +381,7 @@ class Screen:
                     return
                 if time.time() - self._last_display >= self.auto_sleep_time:
                     self._driver.sleep()
+                    self._status = False
                     print("屏幕休眠。")
 
         self.auto_refresh_thread = threading.Thread(target=auto_sleep_methode, daemon=True)
@@ -391,11 +394,17 @@ class Screen:
             self.display(image)
 
     def display(self, image):
+        if not self._status:
+            self._driver.init()
+            self._status = True
         self._driver.display_base(self._driver.get_buffer(image))
         self._partial_time = 0
         self._last_display = time.time()
 
     def display_partial(self, image):
+        if not self._status:
+            self._driver.init()
+            self._status = True
         self._driver.display_partial(self._driver.get_buffer(image))
         self._partial_time += 1
         self._last_display = time.time()
