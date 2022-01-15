@@ -8,15 +8,19 @@
     <title>主界面</title>
 </head>
 <body>
-    <div class="container">
-        <div>E-Ink UI web by xuanzhi33</div>
+    <div class="container text-center">
+        <div>E-Ink UI web&emsp;&emsp;&emsp;by xuanzhi33</div>
         <div class="mb-1">
             <button id="refresh">刷新页面</button> <button id="upda">刷新屏幕</button> <button id="getInfo">设备信息</button>
         </div>
         <div class="mb-1">
             <button id="stop">终止程序</button> <button id="poweroff">关闭设备</button> <button id="reboot">重启设备</button>
         </div>
-        <div id="result" class="mb-1"></div>    
+        <div id="result" class="mb-1"></div>
+        <input type="text" id="input" class="mb-1">
+        <div class="mb-1">
+            <button id="dih">&emsp;·&emsp;</button> <button id="backspace">&emsp;←&emsp;</button> <button id="next">&emsp;→&emsp;</button> <button id="dah">&emsp;-&emsp;</button>
+        </div> 
     </div>
 
     <script src="./src/jquery.min.js"></script>
@@ -35,8 +39,13 @@
         $("#getInfo").click(function(){
             piapi.log("查询info中")
             piapi.getInfo(function(data){
-                $("#result").html(data)
-                setTimeout(upd,300)
+                var html="设备信息：<br>";
+                for(var i in data){
+                    html+=i+"："+data[i]+"<br>";
+                }
+
+                $("#result").html(html);
+                setTimeout(upd,300);
             })
         })
         $("#stop").click(function(){
@@ -48,8 +57,96 @@
         $("#reboot").click(function(){
             piapi.reboot()
         })
+
+        var morseToABC = {
+            ".-": "a",
+            "-...": "b",
+            "-.-.": "c",
+            "-..": "d",
+            ".": "e",
+            "..-.": "f",
+            "--.": "g",
+            "....": "h",
+            "..": "i",
+            ".---": "j",
+            "-.-": "k",
+            ".-..": "l",
+            "--": "m",
+            "-.": "n",
+            "---": "o",
+            ".--.": "p",
+            "--.-": "q",
+            ".-.": "r",
+            "...": "s",
+            "-": "t",
+            "..-": "u",
+            "...-": "v",
+            ".--": "w",
+            "-..-": "x",
+            "-.--": "y",
+            "--..": "z",
+            "-----": "0",
+            ".----": "1",
+            "..---": "2",
+            "...--": "3",
+            "....-": "4",
+            ".....": "5",
+            "-....": "6",
+            "--...": "7",
+            "---..": "8",
+            "----.": "9",
+            ".-.-.-": ".",
+            "--..--": ",",
+            "..--..": "?",
+            ".----.": "'",
+            "-.-.--": "!",
+            "-..-.": "/",
+            "-.--.": "(",
+            "-.--.-": ")",
+            ".-...": "&",
+            "---...": ":",
+            "-.-.-.": ";",
+            "-...-": "=",
+            ".-.-.": "+",
+            "-....-": "-",
+            "..--.-": "_",
+            ".-..-.": "@",
+            "...-..-": "$",
+            ".--.-.": "\"",
+            "..--": " ",
+            ".-.-": "\n"
+        }
+        var currentMorse = "";
+        var inputId = "input";
+        $("#dih").click(function(){
+            currentMorse += ".";
+        });
+        $("#dah").click(function(){
+            currentMorse += "-";
+        });
+        $("#next").click(function(){
+            if (currentMorse == ""){
+                $("#"+inputId).val($("#"+inputId).val()+" ");
+            }else{
+                var abc = morseToABC[currentMorse];
+                if (abc == undefined){
+                    abc = "";
+                }
+                $("#"+inputId).val($("#"+inputId).val()+abc);
+                upd();
+                currentMorse = "";
+            }
+        });
+        $("#backspace").click(function(){
+            if (currentMorse == ""){
+                var val = $("#"+inputId).val();
+                $("#"+inputId).val(val.substring(0, val.length-1));
+                upd();
+            }else{
+                currentMorse = "";
+            }
+        });
         
-   
     </script>
 </body>
 </html>

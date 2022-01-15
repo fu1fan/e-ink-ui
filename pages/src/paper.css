@@ -30,6 +30,14 @@ button, button:hover, button:active, button:focus {
     border-radius: 0px!important;
     outline: none;
 }
+input{
+    background-color: white;
+    /*黑色虚线边框1px*/
+    border: 2px dotted black;
+    border-radius: 0px!important;
+    outline: none;
+    width: 100%;
+}
 
 a, a:hover, a:active {
     color:black;

@@ -50,7 +50,7 @@ if __name__ == "__main__":
     # 记录时间戳
     startTime = time()
     env = enviroment.Env()
-    print("浏览器内核启动中...")
+    print("内核启动中...")
     def loadImgThread():
         env.Screen.display(Image.open("resources/start1.png"))
         sleep(1)
@@ -64,46 +64,53 @@ if __name__ == "__main__":
     # 设置页面大小为296x128
     browser.set_window_size(296, 128)
 
+    def pi_api_handler():
+        msg = browser.execute_script("return window.piapi.msg")
+        if (msg != "okk") and (msg != None):
+            print("收到API消息：",msg)
+            if msg == "updateImage":
+                print("即将更新屏幕...")
+                updateImage()
+            elif msg == "getInfo":
+                print("传入设备信息...")
+                print(getInfo())
+                jsonMsg = {}
+                jsonMsg["msg"] = "getInfo"
+                jsonMsg["data"] = getInfo()
+                jsonMsg = json.dumps(jsonMsg)
+                browser.execute_script("window.piapi.piCallback("+jsonMsg+")")
+            elif msg == "log":
+                print("接受到js的log消息：",end="")
+                print(browser.execute_script("return window.piapi.logmsg"))
+            elif msg == "stop":
+                print("接受到stop指令，即将关闭程序...")
+                pid = os.getpid()
+                print('pid : ',pid)
+                env.Screen.display(Image.open("resources/terminated.png"))
+                browser.quit()
+                os.kill(pid,signal.SIGKILL)
+            elif msg == "reboot":
+                print("接受到reboot指令，即将重启...")
+                env.Screen.display(Image.open("resources/poweroff.png"))
+                browser.quit()
+                os.system("sudo reboot")
+            elif msg == "poweroff":
+                print("接受到poweroff指令，即将关机...")
+                env.Screen.display(Image.open("resources/poweroff.png"))
+                browser.quit()
+                os.system("sudo poweroff")
+
+
+            browser.execute_script("window.piapi.msg = 'okk'")
+
+
     def pi_api_interval():
         while 1:
             sleep(0.1)
-            msg = browser.execute_script("return window.piapi.msg")
-            if (msg != "okk") and (msg != None):
-                print("收到API消息：",msg)
-                if msg == "updateImage":
-                    print("即将更新屏幕...")
-                    updateImage()
-                elif msg == "getInfo":
-                    print("传入设备信息...")
-                    print(getInfo())
-                    jsonMsg = {}
-                    jsonMsg["msg"] = "getInfo"
-                    jsonMsg["data"] = getInfo()
-                    jsonMsg = json.dumps(jsonMsg)
-                    browser.execute_script("window.piapi.piCallback('"+jsonMsg+"')")
-                elif msg == "log":
-                    print("接受到js的log消息：",end="")
-                    print(browser.execute_script("return window.piapi.logmsg"))
-                elif msg == "stop":
-                    print("接受到stop指令，即将关闭程序...")
-                    pid = os.getpid()
-                    print('pid : ',pid)
-                    env.Screen.display(Image.open("resources/terminated.png"))
-                    browser.quit()
-                    os.kill(pid,signal.SIGTERM)
-                elif msg == "reboot":
-                    print("接受到reboot指令，即将重启...")
-                    env.Screen.display(Image.open("resources/poweroff.png"))
-                    browser.quit()
-                    os.system("sudo reboot")
-                elif msg == "poweroff":
-                    print("接受到poweroff指令，即将关机...")
-                    env.Screen.display(Image.open("resources/poweroff.png"))
-                    browser.quit()
-                    os.system("sudo poweroff")
-
-
-                browser.execute_script("window.piapi.msg = 'okk'")
+            try:
+                pi_api_handler()
+            except:
+                print("api出了点小问题，但关系不是很大。")
 
 
 
@@ -123,19 +130,23 @@ if __name__ == "__main__":
     print("主页面渲染完成，耗时：",time()-time2)
     print("一共用时：",time()-startTime)
     def updateImage(refresh=False):
-        screenshot = browser.get_screenshot_as_png()
-        screenshotImg = Image.open(BytesIO(screenshot))
-        # 判断是否和imgOld相同
-        if imgOld[0].tobytes() != screenshotImg.tobytes():
-            imgOld[0] = screenshotImg
-            if refresh:
-                print("屏幕全局刷新...")
-                env.Screen.display(screenshotImg)
+        try:
+            screenshot = browser.get_screenshot_as_png()
+            screenshotImg = Image.open(BytesIO(screenshot))
+            # 判断是否和imgOld相同
+            if imgOld[0].tobytes() != screenshotImg.tobytes():
+                imgOld[0] = screenshotImg
+                if refresh:
+                    print("屏幕全局刷新...")
+                    env.Screen.display(screenshotImg)
+                else:
+                    print("屏幕局部刷新...")
+                    env.Screen.display_auto(screenshotImg)
             else:
-                print("屏幕局部刷新...")
-                env.Screen.display_auto(screenshotImg)
-        else:
-            print("屏幕未变化，不刷新。")
+                print("屏幕未变化，不刷新。")
+        except:
+            print("屏幕更新出错，可能是因为网络原因。")
+
 
     updateImage(refresh=True)
  
