@@ -155,11 +155,11 @@ if __name__ == "__main__":
     
     def touchHandler(now, old):
         # 按下
-        if (old.Touch == 0 and now.Touch == 1):
+        if old.Touch == 0 and now.Touch == 1:
             mousePos[0] = now.X[0]
             mousePos[1] = now.Y[0]
 
-        elif (old.Touch == 1 and now.Touch == 0):
+        elif old.Touch == 1 and now.Touch == 0:
         # 抬起
             x = now.X[0]
             y = now.Y[0]
