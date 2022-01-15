@@ -1,4 +1,4 @@
-import os, json, socket
+import os, json, socket, sys, signal
 from time import sleep
 from time import time
 import enviroment
@@ -66,6 +66,7 @@ if __name__ == "__main__":
 
     def pi_api_interval():
         while 1:
+            sleep(0.1)
             msg = browser.execute_script("return window.piapi.msg")
             if (msg != "okk") and (msg != None):
                 print("收到API消息：",msg)
@@ -75,13 +76,36 @@ if __name__ == "__main__":
                 elif msg == "getInfo":
                     print("传入设备信息...")
                     print(getInfo())
-                    browser.execute_script("window.piapi.piCallback('"+getInfo()+"')")
+                    jsonMsg = {}
+                    jsonMsg["msg"] = "getInfo"
+                    jsonMsg["data"] = getInfo()
+                    jsonMsg = json.dumps(jsonMsg)
+                    browser.execute_script("window.piapi.piCallback('"+jsonMsg+"')")
                 elif msg == "log":
-                    print("接受到js的log消息：")
-                    print(browser.execute_script("return window.piapi.log"))
+                    print("接受到js的log消息：",end="")
+                    print(browser.execute_script("return window.piapi.logmsg"))
+                elif msg == "stop":
+                    print("接受到stop指令，即将关闭程序...")
+                    pid = os.getpid()
+                    print('pid : ',pid)
+                    env.Screen.display(Image.open("resources/terminated.png"))
+                    browser.quit()
+                    os.kill(pid,signal.SIGTERM)
+                elif msg == "reboot":
+                    print("接受到reboot指令，即将重启...")
+                    env.Screen.display(Image.open("resources/poweroff.png"))
+                    browser.quit()
+                    os.system("sudo reboot")
+                elif msg == "poweroff":
+                    print("接受到poweroff指令，即将关机...")
+                    env.Screen.display(Image.open("resources/poweroff.png"))
+                    browser.quit()
+                    os.system("sudo poweroff")
 
-                browser.execute_script("window.piapi = 'okk'")
-            sleep(0.1)
+
+                browser.execute_script("window.piapi.msg = 'okk'")
+
+
 
     pi_api_thread = threading.Thread(target=pi_api_interval, daemon=True)
     pi_api_thread.start()

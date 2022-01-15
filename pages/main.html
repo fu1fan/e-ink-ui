@@ -8,21 +8,47 @@
     <title>主界面</title>
 </head>
 <body>
-    <a href="javascript:location.reload()">E-Ink UI&emsp;Debug</a><br>
-    <button id="upd">刷新屏幕</button><br>
-    <button id="getInfo">获取设备信息</button>
+    <div class="container">
+        <div>E-Ink UI web by xuanzhi33</div>
+        <div class="mb-1">
+            <button id="refresh">刷新页面</button> <button id="upda">刷新屏幕</button> <button id="getInfo">设备信息</button>
+        </div>
+        <div class="mb-1">
+            <button id="stop">终止程序</button> <button id="poweroff">关闭设备</button> <button id="reboot">重启设备</button>
+        </div>
+        <div id="result" class="mb-1"></div>    
+    </div>
 
     <script src="./src/jquery.min.js"></script>
     <script src="./src/piapi.js"></script>
     <script>
-
-        $("#upd").click(function(){
+        function upd(){
+            piapi.updateImage()
+        }
+        $("#refresh").click(function(){
+            location.reload();
+        });
+        $("#upda").click(function(){
             piapi.updateImage();
         });
 
         $("#getInfo").click(function(){
-            piapi.log("111")
+            piapi.log("查询info中")
+            piapi.getInfo(function(data){
+                $("#result").html(data)
+                setTimeout(upd,300)
+            })
         })
+        $("#stop").click(function(){
+            piapi.stop()
+        })
+        $("#poweroff").click(function(){
+            piapi.poweroff()
+        })
+        $("#reboot").click(function(){
+            piapi.reboot()
+        })
+        
    
     </script>
 </body>

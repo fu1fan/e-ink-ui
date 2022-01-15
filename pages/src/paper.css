@@ -23,12 +23,14 @@
     color:black;
 }
 
-button{
+button, button:hover, button:active, button:focus {
     background-color: white;
     /*黑色边框2px*/
     border: 2px solid black;
+    border-radius: 0px!important;
+    outline: none;
 }
 
-a{
+a, a:hover, a:active {
     color:black;
 }
