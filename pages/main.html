@@ -1,0 +1,29 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>主界面</title>
+</head>
+<body>
+    <a href="javascript:location.reload()">E-Ink UI&emsp;Debug</a><br>
+    <button id="upd">刷新屏幕</button><br>
+    <button id="getInfo">获取设备信息</button>
+
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+
+        $("#upd").click(function(){
+            piapi.updateImage();
+        });
+
+        $("#getInfo").click(function(){
+            piapi.log("111")
+        })
+   
+    </script>
+</body>
+</html>

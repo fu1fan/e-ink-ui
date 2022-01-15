@@ -379,6 +379,7 @@ class Screen:
                     return
                 if time.time() - self._last_display >= self.auto_sleep_time:
                     self._driver.sleep()
+                    print("屏幕休眠。")
 
         self.auto_refresh_thread = threading.Thread(target=auto_sleep_methode, daemon=True)
         self.auto_refresh_thread.start()
