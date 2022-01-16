@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./src/bootstrap.min.css">
     <link rel="stylesheet" href="./src/paper.css">
+    <link rel="stylesheet" href="./src/css/font-awesome.min.css">
     <title>主界面</title>
 </head>
 
@@ -13,17 +14,20 @@
     <div class="container text-center">
         <div><span id="net"></span>&emsp;<span id="time">00:00</span>&emsp;@xuanzhi33</div>
         <div class="mb-1">
+            <button id="reader"><i class="fa fa-book" aria-hidden="true"></i> 阅读</button> <button id="weather"><i class="fa fa-cloud" aria-hidden="true"></i> 天气</button> <button id="clock"><i class="fa fa-clock-o" aria-hidden="true"></i> 时钟</button>
+        </div>
+        <div class="mb-1">
+            <button
+            id="date"><i class="fa fa-calendar" aria-hidden="true"></i> 时钟&日期</button>
+        </div>
+        <div class="mb-1">
             <button id="refresh">刷新页面</button> <button id="upda">刷新屏幕</button> <button id="getInfo">设备信息</button>
         </div>
         <div class="mb-1">
-            <button id="stop">终止程序</button> <button id="poweroff">关闭设备</button> <button id="reboot">重启设备</button>
-        </div>
-        <div class="mb-1">
-            <button id="reader">阅读</button> <button id="weather">天气</button> <button id="clock">大时钟</button> <button
-                id="date">小时钟</button>
+            <button id="poweroff"><i class="fa fa-power-off" aria-hidden="true"></i> 关机</button> <button id="reboot"><i class="fa fa-refresh" aria-hidden="true"></i> 重启</button> <button id="stop"><i class="fa fa-stop" aria-hidden="true"></i> 停止程序</button>
         </div>
         <div id="result" class="mb-1"></div>
-        <input type="text" id="input" class="mb-1">
+        <input placeholder="终端" type="text" id="input" class="mb-1">
         <div class="mb-1">
             <button id="dih">&emsp;·&emsp;</button> <button id="backspace">&emsp;←&emsp;</button> <button
                 id="next">&emsp;→&emsp;</button> <button id="dah">&emsp;-&emsp;</button>
@@ -212,10 +216,10 @@
         }
 
         function whenOnline() {
-            $("#net").html("WiFi");
+            $("#net").html('<i class="fa fa-wifi" aria-hidden="true"></i> WiFi');
         }
         function whenOffline() {
-            $("#net").html("4G 中国移动");
+            $("#net").html('<i class="fa fa-signal" aria-hidden="true"></i> 中国移动 4G');
         }
         if (navigator.onLine) {
             whenOnline();
