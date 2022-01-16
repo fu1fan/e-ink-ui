@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="./src/paper.css">
     <title>主界面</title>
 </head>
+
 <body>
     <div class="container text-center">
         <div>E-Ink UI web&emsp;&emsp;&emsp;by xuanzhi33</div>
@@ -16,46 +18,54 @@
         <div class="mb-1">
             <button id="stop">终止程序</button> <button id="poweroff">关闭设备</button> <button id="reboot">重启设备</button>
         </div>
+        <div class="mb-1">
+            <button id="reader">阅读器</button>
+        </div>
         <div id="result" class="mb-1"></div>
         <input type="text" id="input" class="mb-1">
         <div class="mb-1">
-            <button id="dih">&emsp;·&emsp;</button> <button id="backspace">&emsp;←&emsp;</button> <button id="next">&emsp;→&emsp;</button> <button id="dah">&emsp;-&emsp;</button>
-        </div> 
+            <button id="dih">&emsp;·&emsp;</button> <button id="backspace">&emsp;←&emsp;</button> <button
+                id="next">&emsp;→&emsp;</button> <button id="dah">&emsp;-&emsp;</button>
+        </div>
     </div>
 
     <script src="./src/jquery.min.js"></script>
     <script src="./src/piapi.js"></script>
     <script>
-        function upd(){
+        function upd() {
             piapi.updateImage()
         }
-        $("#refresh").click(function(){
+        $("#refresh").click(function () {
             location.reload();
         });
-        $("#upda").click(function(){
+        $("#upda").click(function () {
             piapi.updateImage();
         });
 
-        $("#getInfo").click(function(){
+        $("#getInfo").click(function () {
             piapi.log("查询info中")
-            piapi.getInfo(function(data){
-                var html="设备信息：<br>";
-                for(var i in data){
-                    html+=i+"："+data[i]+"<br>";
+            piapi.getInfo(function (data) {
+                data = JSON.parse(data.data)
+                var html = "设备信息<br>";
+                for (var i in data) {
+                    html += i + "：" + data[i] + "<br>";
                 }
 
                 $("#result").html(html);
-                setTimeout(upd,300);
+                setTimeout(upd, 200);
             })
         })
-        $("#stop").click(function(){
+        $("#stop").click(function () {
             piapi.stop()
         })
-        $("#poweroff").click(function(){
+        $("#poweroff").click(function () {
             piapi.poweroff()
         })
-        $("#reboot").click(function(){
+        $("#reboot").click(function () {
             piapi.reboot()
+        })
+        $("#reader").click(function () {
+            location.href = "./reader.html"
         })
 
         var morseToABC = {
@@ -118,35 +128,61 @@
         }
         var currentMorse = "";
         var inputId = "input";
-        $("#dih").click(function(){
+        function sendCmd() {
+            piapi.runCmd($("#input").val(), function (data) {
+                $("#result").html(data.data);
+                setTimeout(upd, 200);
+            })
+            $("#input").val("");
+        }
+        $("#dih").click(function () {
             currentMorse += ".";
         });
-        $("#dah").click(function(){
+        $("#dah").click(function () {
             currentMorse += "-";
         });
-        $("#next").click(function(){
-            if (currentMorse == ""){
-                $("#"+inputId).val($("#"+inputId).val()+" ");
-            }else{
+        $("#next").click(function () {
+            if (currentMorse == "") {
+                $("#" + inputId).val($("#" + inputId).val() + " ");
+            } else if (currentMorse == ".-.-") {
+                currentMorse = "";
+                sendCmd();
+            } else {
                 var abc = morseToABC[currentMorse];
-                if (abc == undefined){
+                if (abc == undefined) {
                     abc = "";
                 }
-                $("#"+inputId).val($("#"+inputId).val()+abc);
+                $("#" + inputId).val($("#" + inputId).val() + abc);
                 upd();
                 currentMorse = "";
             }
         });
-        $("#backspace").click(function(){
-            if (currentMorse == ""){
-                var val = $("#"+inputId).val();
-                $("#"+inputId).val(val.substring(0, val.length-1));
+        $("#backspace").click(function () {
+            if (currentMorse == "") {
+                var val = $("#" + inputId).val();
+                $("#" + inputId).val(val.substring(0, val.length - 1));
                 upd();
-            }else{
+            } else {
                 currentMorse = "";
             }
         });
+
+        function GetUrlByParamName(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var URL = decodeURI(window.location.search);
+            var r = URL.substr(1).match(reg);
+            if (r != null) {
+                //decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码  
+                return decodeURI(r[2]);
+            };
+            return null;
+        }
         
+        if (GetUrlByParamName("refresh") == "1"){
+            upd();
+        }
+
     </script>
 </body>
+
 </html>

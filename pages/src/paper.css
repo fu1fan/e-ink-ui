@@ -42,3 +42,18 @@ input{
 a, a:hover, a:active {
     color:black;
 }
+
+/*自定义字体*/
+@font-face {
+    font-family: px16;
+    src: url('./16px.ttf');
+}
+
+@font-face {
+    font-family: px12;
+    src: url('./12px.ttf');
+}
+
+* {
+    font-family: px16;
+}

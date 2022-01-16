@@ -18,11 +18,14 @@ chrome_options.add_argument('--headless')
 # 关闭沙箱以便root运行
 chrome_options.add_argument("--no-sandbox")
 
+def runCmd(cmd):
+    pipe = os.popen(cmd)
+    text = pipe.read()
+    pipe.close()
+    return text
+
 def fileURL(path):
     return "file://"+os.path.abspath(path)
-
-def getIP():
-    import socket
 
 def get_host_ip():
     try:
@@ -38,6 +41,7 @@ def get_host_ip():
 def getInfo():
     info = {}
     info["ip"] = get_host_ip()
+    info["WIFI"] = runCmd("sudo iwlist wlan0 scan | grep ESSID")
     return json.dumps(info)
 
 mousePos=[0,0]
@@ -99,6 +103,17 @@ if __name__ == "__main__":
                 env.Screen.display(Image.open("resources/poweroff.png"))
                 browser.quit()
                 os.system("sudo poweroff")
+            elif msg == "runCmd":
+                cmdText = browser.execute_script("return window.piapi.cmd")
+                print("接受到runCmd指令，即将执行命令：",cmdText)
+                cmdResult = runCmd(cmdText)
+                print("命令执行结果：",cmdResult)
+                jsonMsg = {}
+                jsonMsg["msg"] = "runCmd"
+                jsonMsg["data"] = cmdResult
+                jsonMsg = json.dumps(jsonMsg)
+                browser.execute_script("window.piapi.piCallback("+jsonMsg+")")
+                
 
 
             browser.execute_script("window.piapi.msg = 'okk'")
@@ -106,7 +121,7 @@ if __name__ == "__main__":
 
     def pi_api_interval():
         while 1:
-            sleep(0.1)
+            sleep(0.05)
             try:
                 pi_api_handler()
             except:

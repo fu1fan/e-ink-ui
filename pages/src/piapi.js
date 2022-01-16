@@ -10,12 +10,22 @@ piapi.log = function(msg){
     piapi.logmsg = msg
 }
 piapi.piCallback = function(data){
-    piapi.callback(data)
+    if (data.msg == "getInfo"){
+        piapi.infoCallback(data)
+    } else if (data.msg == "runCmd"){
+        piapi.cmdCallback(data)
+    }
 }
 
 piapi.getInfo = function(callback){
     piapi.msg = "getInfo"
-    piapi.callback = callback
+    piapi.infoCallback = callback
+}
+
+piapi.runCmd = function(cmd, callback){
+    piapi.msg = "runCmd"
+    piapi.cmd = cmd
+    piapi.cmdCallback = callback
 }
 
 piapi.stop = function(){
