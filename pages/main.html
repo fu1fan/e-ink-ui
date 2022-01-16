@@ -18,7 +18,9 @@
         </div>
         <div class="mb-1">
             <button
-            id="date"><i class="fa fa-calendar" aria-hidden="true"></i> 时钟&日期</button>
+            id="date"><i class="fa fa-calendar" aria-hidden="true"></i> 日期钟</button> <button
+            id="yiyan"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> 一言</button> <button
+            id="testpage"><i class="fa fa-code" aria-hidden="true"></i> 测试页</button>
         </div>
         <div class="mb-1">
             <button id="refresh">刷新页面</button> <button id="upda">刷新屏幕</button> <button id="getInfo">设备信息</button>
@@ -27,7 +29,7 @@
             <button id="poweroff"><i class="fa fa-power-off" aria-hidden="true"></i> 关机</button> <button id="reboot"><i class="fa fa-refresh" aria-hidden="true"></i> 重启</button> <button id="stop"><i class="fa fa-stop" aria-hidden="true"></i> 停止程序</button>
         </div>
         <div id="result" class="mb-1"></div>
-        <input placeholder="终端" type="text" id="input" class="mb-1">
+        <input type="text" id="input" class="mb-1">
         <div class="mb-1">
             <button id="dih">&emsp;·&emsp;</button> <button id="backspace">&emsp;←&emsp;</button> <button
                 id="next">&emsp;→&emsp;</button> <button id="dah">&emsp;-&emsp;</button>
@@ -219,7 +221,7 @@
             $("#net").html('<i class="fa fa-wifi" aria-hidden="true"></i> WiFi');
         }
         function whenOffline() {
-            $("#net").html('<i class="fa fa-signal" aria-hidden="true"></i> 中国移动 4G');
+            $("#net").html('<i class="fa fa-signal" aria-hidden="true"></i> 4G');
         }
         if (navigator.onLine) {
             whenOnline();
@@ -243,6 +245,12 @@
         })
         $("#date").click(function () {
             location.href = "./date.html";
+        })
+        $("#yiyan").click(function () {
+            location.href = "./yiyan.html";
+        })
+        $("#testpage").click(function () {
+            location.href = "https://changyan.work/test/";
         })
 
         $(window).scroll(upd);

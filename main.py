@@ -41,7 +41,8 @@ def get_host_ip():
 def getInfo():
     info = {}
     info["ip"] = get_host_ip()
-    info["WIFI"] = runCmd("sudo iwlist wlan0 scan | grep ESSID")
+    wifistr = runCmd("sudo iwlist wlan0 scan | grep ESSID")
+    info["WIFI"] = wifistr.replace("ESSID:", "").replace("\"", "").replace("\n", ", ").replace("\\x00", "")
     return json.dumps(info)
 
 mousePos=[0,0]

@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>一言</title>
+    <style>
+        #yiyanfrom{
+            font-family: px12;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <br>
+        <div id="yiyan" class="text-center">一言 加载中...</div>
+        <div id="yiyanfrom" style="text-align: right;"></div>
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function getyiyan() {
+            $.getJSON("https://v1.hitokoto.cn/", function (data) {
+                $("#yiyan").text(data.hitokoto);
+                $("#yiyanfrom").text("——" + (data.from_who ? data.from_who : "") + "「" + data.from + "」")
+                piapi.updateImage();
+            })
+        }
+        $("#yiyan").click(function () {
+            getyiyan();
+        })
+        $("#yiyanfrom").click(function () {
+            location.href = "./main.html?refresh=1";
+        })
+        piapi.refreshScreen();
+        setTimeout(getyiyan, 6000);
+    </script>
+</body>
+
+</html>
