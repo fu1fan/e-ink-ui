@@ -5,6 +5,10 @@ piapi.updateImage = function(){
     piapi.msg = "updateImage"
 }
 
+piapi.refreshScreen = function(){
+    piapi.msg = "refreshScreen"
+}
+
 piapi.log = function(msg){
     piapi.msg = "log"
     piapi.logmsg = msg

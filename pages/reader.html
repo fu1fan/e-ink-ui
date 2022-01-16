@@ -8,15 +8,29 @@
     <title>reader</title>
     <style>
         #main{
-            font-size:12px;
+            font-size: 12px;
             font-family: px12;
+        }
+        #bottomMenu{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 24px;
+            border-top: 1px solid black;
+            background: white;
+            font-family: px12;
+            font-size: 12px;
+        }
+        #prog, #backBtn{
+            font-family: px16;
+            font-size: 16px;
         }
 
     </style>
 </head>
 <body>
     <div class="container mt-1">
-        <button onclick="backToMain()">返回</button> 过秦论
         <p id="main">
 秦孝公据崤函之固，拥雍州之地，君臣固守以窥周室，有席卷天下，包举宇内，囊括四海之意，并吞八荒之心。当是时也，商君佐之，内立法度，务耕织，修守战之具，外连衡而斗诸侯。于是秦人拱手而取西河之外。
 <br>
@@ -31,13 +45,49 @@
 且夫天下非小弱也，雍州之地，崤函之固，自若也。陈涉之位，非尊于齐、楚、燕、赵、韩、魏、宋、卫、中山之君也；锄櫌棘矜，非铦于钩戟长铩也；谪戍之众，非抗于九国之师也；深谋远虑，行军用兵之道，非及向时之士也。然而成败异变，功业相反，何也？试使山东之国与陈涉度长絜大，比权量力，则不可同年而语矣。然秦以区区之地，致万乘之势，序八州而朝同列，百有余年矣；然后以六合为家，崤函为宫；一夫作难而七庙隳，身死人手，为天下笑者，何也？仁义不施而攻守之势异也。
         </p>
     </div>
+    <div id="bottomMenu">
+        <a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> 过秦论 &emsp;&emsp;&emsp;<span id="prog"></span> &emsp; <span id="prevBtn">上一页</span>&emsp;<span id="nextBtn">下一页</span>
+    </div>
     <script src="./src/jquery.min.js"></script>
     <script src="./src/piapi.js"></script>
     <script>
-        piapi.updateImage()
         function backToMain(){
             location.href="./main.html?refresh=1"
         }
+
+        function prev(){
+            //获取当前页面的高度
+            var scrollTop = $(document).scrollTop();
+            var newScrollTop = scrollTop - 85;
+            //滚动至新高度
+            $(document).scrollTop(newScrollTop);
+        }
+        function next(){
+            //获取当前页面的高度
+            var scrollTop = $(document).scrollTop();
+            var newScrollTop = scrollTop + 85;
+            //滚动至新高度
+            $(document).scrollTop(newScrollTop);
+        }
+        $("#prevBtn").click(prev);
+        $("#nextBtn").click(next);
+
+        // 获取页面阅读进度
+        function getReadProgress(){
+            return $(document).scrollTop() / ($(document).height() - window.innerHeight);
+        }
+        
+        function setProgress(progress){
+            $("#prog").html(Math.floor(getReadProgress()*100)+"%")
+            piapi.updateImage()
+
+        }
+
+        $(window).scroll(setProgress)
+
+        setProgress()
+        
+
     </script>
 </body>
 </html>

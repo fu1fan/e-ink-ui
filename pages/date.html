@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>Clock</title>
+    <style>
+        body{
+            background: black;
+        }
+        span{
+            color: white;
+        }
+
+        #clock{
+            font-family: MI Lan Pro VF;
+            font-size: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <span id="clock">00:00</span><br>
+        <span id="date"></span>
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage()
+        }
+        function updateTime(){
+            var date = new Date();
+            var h = date.getHours();
+            var m = date.getMinutes();
+            //auto add 0
+            h = h < 10 ? '0' + h : h;
+            m = m < 10 ? '0' + m : m;
+            var time = h + ":" + m;
+
+            var day = date.getDay();
+            var week = ["日","一","二","三","四","五","六"];
+            var da = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            var dateStr = year + "年" + month + "月" + da + "日" + " 星期" + week[day];
+
+
+            if (dateStr != $("#date").text()){
+                $("#date").text(dateStr);
+            }
+
+            if (time != $("#clock").text()){
+                $("#clock").text(time);
+                upd();
+            }
+        }
+
+        updateTime();
+        setInterval(updateTime, 5000);
+
+        $("#date").click(function () {
+            location.href = "./main.html?refresh=1";
+        });
+        
+        piapi.refreshScreen();
+
+    </script>
+</body>
+</html>

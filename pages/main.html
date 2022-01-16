@@ -11,7 +11,7 @@
 
 <body>
     <div class="container text-center">
-        <div>E-Ink UI web&emsp;&emsp;&emsp;by xuanzhi33</div>
+        <div><span id="net"></span>&emsp;<span id="time">00:00</span>&emsp;@xuanzhi33</div>
         <div class="mb-1">
             <button id="refresh">刷新页面</button> <button id="upda">刷新屏幕</button> <button id="getInfo">设备信息</button>
         </div>
@@ -19,7 +19,8 @@
             <button id="stop">终止程序</button> <button id="poweroff">关闭设备</button> <button id="reboot">重启设备</button>
         </div>
         <div class="mb-1">
-            <button id="reader">阅读器</button>
+            <button id="reader">阅读</button> <button id="weather">天气</button> <button id="clock">大时钟</button> <button
+                id="date">小时钟</button>
         </div>
         <div id="result" class="mb-1"></div>
         <input type="text" id="input" class="mb-1">
@@ -35,11 +36,39 @@
         function upd() {
             piapi.updateImage()
         }
+
+        function updateTime() {
+            var date = new Date();
+            var h = date.getHours();
+            var m = date.getMinutes();
+            //auto add 0
+            h = h < 10 ? '0' + h : h;
+            m = m < 10 ? '0' + m : m;
+            var time = h + ":" + m;
+
+            if (time != $("#time").text()) {
+                $("#time").text(time);
+                upd();
+            }
+        }
+
+        var date = new Date();
+        var h = date.getHours();
+        var m = date.getMinutes();
+        //auto add 0
+        h = h < 10 ? '0' + h : h;
+        m = m < 10 ? '0' + m : m;
+        var time = h + ":" + m;
+        $("#time").text(time);
+
+        setInterval(updateTime, 5000);
+
         $("#refresh").click(function () {
-            location.reload();
+            location.href = "./main.html?refresh=1";
         });
+
         $("#upda").click(function () {
-            piapi.updateImage();
+            piapi.refreshScreen();
         });
 
         $("#getInfo").click(function () {
@@ -177,11 +206,42 @@
             };
             return null;
         }
-        
-        if (GetUrlByParamName("refresh") == "1"){
+
+        if (GetUrlByParamName("refresh") == "1") {
             upd();
         }
 
+        function whenOnline() {
+            $("#net").html("WiFi");
+        }
+        function whenOffline() {
+            $("#net").html("4G 中国移动");
+        }
+        if (navigator.onLine) {
+            whenOnline();
+        } else {
+            whenOffline();
+        }
+        $(window).on("online", function () {
+            whenOnline();
+            upd();
+        });
+        $(window).on("offline", function () {
+            whenOffline();
+            upd();
+        });
+
+        $("#clock").click(function () {
+            location.href = "./clock.html";
+        })
+        $("#weather").click(function () {
+            location.href = "./weather.html";
+        })
+        $("#date").click(function () {
+            location.href = "./date.html";
+        })
+
+        $(window).scroll(upd);
     </script>
 </body>
 

@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>Weather</title>
+    <style>
+        * {
+            font-family: px12;
+            font-size: 12px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="he-plugin-standard"></div>
+    <script>
+        WIDGET = {
+            "CONFIG": {
+                "layout": "1",
+                "width": "430",
+                "height": "128",
+                "background": "2",
+                "dataColor": "000000",
+                "language": "zh",
+                "aqiColor": "000000",
+                "city": "CN101210411",
+                "key": "f724bafdbf0c4ee7a9e21074d633bbe3"
+            }
+        }
+    </script>
+    <script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        piapi.updateImage();
+        $("body").click(function () {
+            location.href = "./main.html?refresh=1";
+        });
+        $(window).scroll(function () {
+            piapi.updateImage();
+        });
+    </script>
+</body>
+
+</html>

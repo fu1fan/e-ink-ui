@@ -113,7 +113,9 @@ if __name__ == "__main__":
                 jsonMsg["data"] = cmdResult
                 jsonMsg = json.dumps(jsonMsg)
                 browser.execute_script("window.piapi.piCallback("+jsonMsg+")")
-                
+            elif msg == "refreshScreen":
+                print("接受到refreshScreen指令，即将全局刷新屏幕...")
+                updateImage(refresh=True)
 
 
             browser.execute_script("window.piapi.msg = 'okk'")
@@ -148,17 +150,22 @@ if __name__ == "__main__":
         try:
             screenshot = browser.get_screenshot_as_png()
             screenshotImg = Image.open(BytesIO(screenshot))
-            # 判断是否和imgOld相同
-            if imgOld[0].tobytes() != screenshotImg.tobytes():
-                imgOld[0] = screenshotImg
-                if refresh:
-                    print("屏幕全局刷新...")
-                    env.Screen.display(screenshotImg)
-                else:
+            # 判断是否需要全局刷新
+            if refresh:
+                # 全局刷新
+                print("屏幕全局刷新...")
+                env.Screen.display(screenshotImg)
+            else:
+                # 局部刷新
+                # 判断是否和imgOld相同
+                if imgOld[0].tobytes() != screenshotImg.tobytes():
+                    # 需要局部刷新
+                    imgOld[0] = screenshotImg
                     print("屏幕局部刷新...")
                     env.Screen.display_auto(screenshotImg)
-            else:
-                print("屏幕未变化，不刷新。")
+                else:
+                    print("屏幕未变化，不刷新。")
+
         except:
             print("屏幕更新出错，可能是因为网络原因。")
 
@@ -219,7 +226,6 @@ if __name__ == "__main__":
             print("向左翻页")
         
         ac.perform()
-        updateImage()
 
 
     while 1:
