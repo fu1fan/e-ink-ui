@@ -10,7 +10,7 @@
 <body>
     <div class="container text-center">
         <div class="mt-1">
-            <button id="refreshBtn">刷新页面</button> <button id="runBtn">运行代码</button>
+            <button id="backBtn">返回</button> <button id="refreshBtn">刷新页面</button> <button id="runBtn">运行代码</button>
         </div>
         <p id="out1">
 
@@ -37,6 +37,9 @@
         $("#runBtn").click(function(){
             func();
         });
+        $("#backBtn").click(function(){
+            location.href="./main.html?refresh=1"
+        })
     </script>
 </body>
 </html>
