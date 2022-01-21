@@ -111,7 +111,7 @@ if __name__ == "__main__":
                 print("命令执行结果：",cmdResult)
                 jsonMsg = {}
                 jsonMsg["msg"] = "runCmd"
-                jsonMsg["data"] = cmdResult
+                jsonMsg["data"] = cmdResult.replace("\n","<br>")
                 jsonMsg = json.dumps(jsonMsg)
                 browser.execute_script("window.piapi.piCallback("+jsonMsg+")")
             elif msg == "refreshScreen":
