@@ -119,8 +119,9 @@ if __name__ == "__main__":
                 pythonCode = browser.execute_script("return window.piapi.python")
                 print("接受到runPython指令，即将执行python代码：",pythonCode)
                 try:
-                    pythonResult = exec(pythonCode)
-                    print("python代码执行结果：",pythonResult)
+                    exec(pythonCode)
+                    print("python代码执行成功")
+                    pythonResult = "python代码执行成功"
                 except Exception as e:
                     print("python代码执行失败：",e)
                     pythonResult = "python代码执行失败："+str(e)
