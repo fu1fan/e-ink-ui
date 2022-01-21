@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>切换分支</title>
+    <style>
+        #head {
+            border-bottom: 1px solid black;
+            background: white;
+            /*fixed-top*/
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        #main {
+            font-family: px12;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="head">
+        <span><a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> E-Ink UI 切换分支</span>
+    </div>
+    <div class="container mt-4">
+
+        <p id="main">
+            您当前使用的软件分支是web分支，可以在这里切换为master分支（原生版本）。<br>
+            两者的区别是：<br>
+            web分支（也就是当前分支）使用python和html开发，基于Google Chromium，开发非常方便，但启动慢，而且性能开销高。<br>
+            master分支全部采用python开发，更流畅，但开发成本略高。<br>
+        </p>
+        <div class="text-center">
+            <button id="checkout">切换为master分支</button>
+        </div>
+        <br>
+
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage()
+        }
+        $("#backBtn").click(function () {
+            location.href = "./main.html?refresh=1";
+        });
+        $("#checkout").click(function () {
+            $("#main").html("正在切换分支，请勿断电或重启...");
+            upd();
+            setTimeout(() => {
+                $("#main").html($("#main").html() + "<br>正在撤销本地更改...");
+                upd();
+                setTimeout(() => {
+                    piapi.runCmd("git checkout .", function (res) {
+                        setTimeout(() => {
+                            $("#main").html($("#main").html() + "<br>" + "本地更改撤销成功！<br>正在切换分支...");
+                            upd();
+                            setTimeout(() => {
+                                jsapi.log("okk")
+                            }, 1000);
+                        }, 500);
+                    })
+                }, 2000);
+            }, 2000);
+
+        })
+
+        upd()
+        $(window).scroll(upd)
+
+    </script>
+</body>
+
+</html>
