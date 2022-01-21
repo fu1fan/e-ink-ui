@@ -115,6 +115,20 @@ if __name__ == "__main__":
                 jsonMsg["data"] = cmdResult.replace("\n","<br>")
                 jsonMsg = json.dumps(jsonMsg)
                 browser.execute_script("window.piapi.piCallback("+jsonMsg+")")
+            elif msg == "runPython":
+                pythonCode = browser.execute_script("return window.piapi.python")
+                print("接受到runPython指令，即将执行python代码：",pythonCode)
+                try:
+                    pythonResult = exec(pythonCode)
+                    print("python代码执行结果：",pythonResult)
+                except Exception as e:
+                    print("python代码执行失败：",e)
+                    pythonResult = "python代码执行失败："+str(e)
+                jsonMsg = {}
+                jsonMsg["msg"] = "runPython"
+                jsonMsg["data"] = str(pythonResult)
+                jsonMsg = json.dumps(jsonMsg)
+                browser.execute_script("window.piapi.piCallback("+jsonMsg+")")
             elif msg == "refreshScreen":
                 print("接受到refreshScreen指令，即将全局刷新屏幕...")
                 updateImage(refresh=True)

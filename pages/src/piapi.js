@@ -18,6 +18,8 @@ piapi.piCallback = function(data){
         piapi.infoCallback(data)
     } else if (data.msg == "runCmd"){
         piapi.cmdCallback(data)
+    } else if (data.msg == "runPython"){
+        piapi.pythonCallback(data)
     }
 }
 
@@ -30,6 +32,12 @@ piapi.runCmd = function(cmd, callback){
     piapi.msg = "runCmd"
     piapi.cmd = cmd
     piapi.cmdCallback = callback
+}
+
+piapi.runPython = function(python, callback){
+    piapi.msg = "runPython"
+    piapi.python = python
+    piapi.pythonCallback = callback
 }
 
 piapi.stop = function(){
