@@ -23,6 +23,9 @@
             id="testpage"><i class="fa fa-code" aria-hidden="true"></i> 测试页</button>
         </div>
         <div class="mb-1">
+            <button id="update"><i class="fa fa-arrow-up" aria-hidden="true"></i> 更新软件</button>
+        </div>
+        <div class="mb-1">
             <button id="refresh">刷新页面</button> <button id="upda">刷新屏幕</button> <button id="getInfo">设备信息</button>
         </div>
         <div class="mb-1">
@@ -251,6 +254,9 @@
         })
         $("#testpage").click(function () {
             location.href = "./test.html";
+        })
+        $("#update").click(function () {
+            location.href = "./update.html";
         })
 
         $(window).scroll(upd);
