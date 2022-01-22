@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>随机数生成器</title>
+    <style>
+        #number {
+            font-size: 48px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="head">
+        <span><a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> 随机数生成器 &nbsp; 最小: <span id="minNum">1</span>&nbsp; 最大: <span id="maxNum">100</span></span>
+    </div>
+    <div class="container text-center">
+
+        <div id="number">0</div>
+        <div id="btns">
+            <button id="set6">1-6</button>
+            <button id="set10">1-10</button>
+            <button id="set100">1-100</button>
+            <button id="createBtn">&nbsp;生成&nbsp;</button>
+        </div>
+
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd(){
+            piapi.updateImage();
+        }
+        piapi.refreshScreen();
+
+        $("#backBtn").click(function(){
+            location.href = "./main.html?refresh=1";
+        })
+
+        function randomFrom(lowerValue, upperValue) {
+            return Math.floor(Math.random() * (upperValue - lowerValue + 1) + lowerValue);
+        }
+
+        $("#createBtn").click(function () {
+            var minNum = Number($("#minNum").html());
+            var maxNum = Number($("#maxNum").html());
+            $("#number").text(randomFrom(minNum, maxNum));
+            upd();
+        })
+
+        $("#set6").click(function () {
+            $("#minNum").html("1")
+            $("#maxNum").html("6")
+            upd();
+        })
+        $("#set10").click(function () {
+            $("#minNum").html("1")
+            $("#maxNum").html("10")
+            upd();
+        })
+        $("#set100").click(function () {
+            $("#minNum").html("1")
+            $("#maxNum").html("100")
+            upd();
+        })
+
+    </script>
+</body>
+
+</html>

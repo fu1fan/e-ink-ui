@@ -1,0 +1,87 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>键盘</title>
+    <style>
+        button,
+        button:hover,
+        button:active,
+        button:focus{
+            border: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="textInp">
+        1
+    </div>
+    <div id="keyboard" class="p-1">
+        <div class="keyrow">
+            <button class="keys" shift="!">1</button>
+            <button class="keys" shift="@">2</button>
+            <button class="keys" shift="#">3</button>
+            <button class="keys" shift="$">4</button>
+            <button class="keys" shift="&">5</button>
+            <button class="keys" shift="(">6</button>
+            <button class="keys" shift=")">7</button>
+            <button class="keys" shift="-">8</button>
+            <button class="keys" shift=",">9</button>
+            <button class="keys" shift=".">0</button>
+            
+        </div>
+        <div class="keyrow">
+            <button class="keys" shift="Q">q</button>
+            <button class="keys" shift="W">w</button>
+            <button class="keys" shift="E">e</button>
+            <button class="keys" shift="R">r</button>
+            <button class="keys" shift="T">t</button>
+            <button class="keys" shift="Y">y</button>
+            <button class="keys" shift="U">u</button>
+            <button class="keys" shift="I">i</button>
+            <button class="keys" shift="O">o</button>
+            <button class="keys" shift="P">p</button>
+        </div>
+        <div class="keyrow">
+            <button class="keys" shift="A">a</button>
+            <button class="keys" shift="S">s</button>
+            <button class="keys" shift="D">d</button>
+            <button class="keys" shift="F">f</button>
+            <button class="keys" shift="G">g</button>
+            <button class="keys" shift="H">h</button>
+            <button class="keys" shift="J">j</button>
+            <button class="keys" shift="K">k</button>
+            <button class="keys" shift="L">l</button>
+            <button class="backspace"><svg t="1642862172624" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2289" width="20" height="20"><path d="M755.498667 353.834667a42.666667 42.666667 0 0 1 0 60.330666L657.664 512l97.834667 97.834667a42.666667 42.666667 0 0 1-60.330667 60.330666L597.333333 572.330667l-97.834666 97.834666a42.666667 42.666667 0 0 1-60.330667-60.330666L537.002667 512l-97.834667-97.834667a42.666667 42.666667 0 1 1 60.330667-60.330666L597.333333 451.669333l97.834667-97.834666a42.666667 42.666667 0 0 1 60.330667 0z" fill="#0D0D0D" p-id="2290"></path><path d="M938.666667 213.333333a42.666667 42.666667 0 0 0-42.666667-42.666666H403.626667a85.333333 85.333333 0 0 0-64.810667 29.781333l-219.392 256a85.333333 85.333333 0 0 0 0 111.104l219.392 256A85.333333 85.333333 0 0 0 403.626667 853.333333H896a42.666667 42.666667 0 0 0 42.666667-42.666666V213.333333z m-85.333334 554.666667H403.626667l-219.434667-256L403.626667 256H853.333333v512z" fill="#0D0D0D" p-id="2291"></path></svg></button>
+        </div>
+        <div class="keyrow">
+            <button class="keys" shift="Z">z</button>
+            <button class="keys" shift="X">x</button>
+            <button class="keys" shift="C">c</button>
+            <button class="keys" shift="V">v</button>
+            <button class="keys" shift="B">b</button>
+            <button class="keys" shift="N">n</button>
+            <button class="keys" shift="M">m</button>
+            <button class="space"><svg t="1642862287105" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3249" width="23" height="23"><path d="M170.666667 384v170.666667h682.666666V384h85.333334v213.333333a42.666667 42.666667 0 0 1-42.666667 42.666667H128a42.666667 42.666667 0 0 1-42.666667-42.666667V384h85.333334z" p-id="3250"></path></svg></button>
+            <button class="shift"><svg t="1642862328271" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4071" width="20" height="20"><path d="M796.544 512H640v256H384v-256H227.242667l284.416-284.672L796.586667 512zM298.666667 597.333333v213.333334a42.666667 42.666667 0 0 0 42.666666 42.666666h341.333334a42.666667 42.666667 0 0 0 42.666666-42.666666v-213.333334h200.021334a32 32 0 0 0 22.613333-54.613333l-413.696-413.44a32 32 0 0 0-45.269333 0l-413.098667 413.44A32 32 0 0 0 98.56 597.333333H298.666667z" fill="#000000" p-id="4072"></path></svg></button>
+        </div>
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        //点击shift键时，按键的html与shift属性值互换
+        $(".shift").click(function(){
+            $(".keys").each(function(){
+                    var html = $(this).html();
+                    $(this).html($(this).attr("shift"));
+                    $(this).attr("shift",html);
+            })
+        })
+
+    </script>
+</body>
+</html>

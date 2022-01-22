@@ -14,25 +14,32 @@
     <div class="container text-center">
         <div><span id="net"></span>&emsp;<span id="time">00:00</span>&emsp;@xuanzhi33</div>
         <div class="mb-1">
-            <button id="reader"><i class="fa fa-book" aria-hidden="true"></i> 阅读</button> <button id="weather"><i class="fa fa-cloud" aria-hidden="true"></i> 天气</button> <button id="clock"><i class="fa fa-clock-o" aria-hidden="true"></i> 时钟</button>
+            <button id="reader"><i class="fa fa-book" aria-hidden="true"></i> 阅读</button>
+            <button id="weather"><i class="fa fa-cloud" aria-hidden="true"></i> 天气</button>
+            <button id="clock"><i class="fa fa-clock-o" aria-hidden="true"></i> 时钟</button>
         </div>
         <div class="mb-1">
-            <button
-            id="date"><i class="fa fa-calendar" aria-hidden="true"></i> 日期钟</button> <button
-            id="yiyan"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> 一言</button> <button
-            id="testpage"><i class="fa fa-code" aria-hidden="true"></i> 测试页</button>
+            <button id="date"><i class="fa fa-calendar" aria-hidden="true"></i> 日期钟</button>
+            <button id="yiyan"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> 一言</button>
+            <button id="testpage"><i class="fa fa-code" aria-hidden="true"></i> 测试页</button>
         </div>
         <div class="mb-1">
             <button id="calc"><i class="fa fa-calculator" aria-hidden="true"></i> 计算器</button>
+            <button id="random"><i class="fa fa-random" aria-hidden="true"></i> 随机数生成器</button>
         </div>
         <div class="mb-1">
-            <button id="update"><i class="fa fa-arrow-up" aria-hidden="true"></i> 软件更新</button> <button id="changeMode"><i class="fa fa-exchange" aria-hidden="true"></i> 切换分支</button>
+            <button id="update"><i class="fa fa-arrow-up" aria-hidden="true"></i> 软件更新</button>
+            <button id="changeMode"><i class="fa fa-exchange" aria-hidden="true"></i> 切换分支</button>
         </div>
         <div class="mb-1">
-            <button id="refresh">刷新页面</button> <button id="upda">刷新屏幕</button> <button id="getInfo">设备信息</button>
+            <button id="refresh">刷新页面</button>
+            <button id="upda">刷新屏幕</button>
+            <button id="getInfo">设备信息</button>
         </div>
         <div class="mb-1">
-            <button id="poweroff"><i class="fa fa-power-off" aria-hidden="true"></i> 关机</button> <button id="reboot"><i class="fa fa-refresh" aria-hidden="true"></i> 重启</button> <button id="stop"><i class="fa fa-stop" aria-hidden="true"></i> 停止程序</button>
+            <button id="poweroff"><i class="fa fa-power-off" aria-hidden="true"></i> 关机</button>
+            <button id="reboot"><i class="fa fa-refresh" aria-hidden="true"></i> 重启</button>
+            <button id="stop"><i class="fa fa-stop" aria-hidden="true"></i> 停止程序</button>
         </div>
         <div id="result" class="mb-1"></div>
         <input type="text" id="input" class="mb-1">
@@ -266,6 +273,9 @@
         })
         $("#calc").click(function(){
             location.href = "./calc.html";
+        })
+        $("#random").click(function(){
+            location.href = "./random.html";
         })
 
         $(window).scroll(upd);
