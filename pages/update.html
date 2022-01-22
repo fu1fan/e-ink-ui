@@ -1,0 +1,94 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>软件更新</title>
+    <style>
+        #head {
+            border-bottom: 1px solid black;
+            background: white;
+            /*fixed-top*/
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        #main {
+            font-family: px12;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="head">
+        <span><a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> E-Ink UI 软件更新</span>
+    </div>
+    <div class="container mt-4">
+
+        <p id="main">
+            将使用 git pull 拉取web分支的最新版本<br>
+            注意：点击切换分支后，将撤销对当前文件所做的全部更改（即先运行：git checkout master）
+        </p>
+        <div class="text-center">
+            <button id="checkout">点击更新软件</button>
+        </div>
+        <br>
+
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage()
+        }
+        $("#backBtn").click(function () {
+            location.href = "./main.html?refresh=1";
+        });
+        $("#checkout").click(function () {
+            $("#checkout").hide();
+
+            $("#main").html("正在更新软件，请勿断电或重启...");
+            upd();
+            setTimeout(() => {
+                $("#main").html("正在撤销本地更改...<br>（运行命令：git checkout .）");
+                upd();
+                setTimeout(() => {
+                    piapi.runCmd("git checkout .", function (res) {
+                        setTimeout(() => {
+                            $("#main").html("本地更改撤销成功！<br>正在拉取新版本（可能需要较长时间）...<br>（运行命令：git pull）");
+                            upd();
+                            setTimeout(() => {
+                                piapi.runCmd("git pull", function(res){
+                                    setTimeout(() => {
+                                        $("#main").html("更新完毕！即将重启软件...<br>git的输出结果为：<br>"+res.data);
+                                        upd();
+                                        setTimeout(() => {
+                                            var pythoncode = "os.system('sudo python3 restart.py &')\n" +
+                                            "pid = os.getpid()\n" +
+                                            "os.kill(pid,signal.SIGKILL)\n";
+                                            piapi.runPython(pythoncode,function(res){
+                                                // 此时软件应该已经关闭。
+                                            })
+                                        }, 1500);
+                                    }, 500);
+                                })
+                            }, 1500);
+                        }, 500);
+                    })
+                }, 1500);
+            }, 1500);
+
+        })
+
+        upd()
+        $(window).scroll(upd)
+
+    </script>
+</body>
+
+</html>
