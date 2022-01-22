@@ -71,15 +71,11 @@
                                         $("#main").html("切换分支完毕！即将重启软件...<br>git的输出结果为：<br>"+res.data);
                                         upd();
                                         setTimeout(() => {
-                                            var pythoncode = "os.system('sudo python3 restart.py')\n" +
+                                            var pythoncode = "os.system('sudo python3 restart.py &')\n" +
                                             "pid = os.getpid()\n" +
-                                            "print('结束pid : ',pid)\n" +
                                             "os.kill(pid,signal.SIGKILL)\n";
                                             piapi.runPython(pythoncode,function(res){
-                                                setTimeout(() => {
-                                                    $("#main").html("正在重启软件...");
-                                                    upd();
-                                                }, 500);
+                                                // 此时软件应该已经关闭。
                                             })
                                         }, 1500);
                                     }, 500);
