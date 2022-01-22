@@ -64,10 +64,11 @@
                             setTimeout(() => {
                                 piapi.runCmd("git pull", function(res){
                                     setTimeout(() => {
-                                        $("#main").html("更新完毕！即将重启软件...<br>git的输出结果为：<br>"+res.data);
+                                        $("#main").html("更新完毕！正在重启软件...<br>git的输出结果为：<br>"+res.data);
                                         upd();
                                         setTimeout(() => {
-                                            var pythoncode = "os.system('sudo python3 restart.py &')\n" +
+                                            var pythoncode = "browser.quit()\n" +
+                                            "os.system('sudo python3 restart.py &')\n" +
                                             "pid = os.getpid()\n" +
                                             "os.kill(pid,signal.SIGKILL)\n";
                                             piapi.runPython(pythoncode,function(res){
