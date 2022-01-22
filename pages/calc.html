@@ -1,0 +1,157 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>计算器</title>
+    <style>
+        #main {
+            width: 100%;
+        }
+
+        button,
+        button:hover,
+        button:focus,
+        button:active {
+            border: none;
+        }
+
+        .keys {
+            width: 30px;
+            height: 30px
+        }
+
+        .keyboard {
+            float: right;
+        }
+
+        .inputbox {
+            float: left;
+            width: 35%;
+        }
+
+        #numInput {
+            width: 100%;
+            height: 94px;
+            border: 2px dotted black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div class="inputbox p-1">
+            <textarea type="text" id="numInput"></textarea>
+            <div>
+                <button id="backBtn">&lt;</button>  计算器
+            </div>
+        </div>
+        <div class="keyboard p-1">
+            <div class="keyrow">
+                <button class="keys ac-key">AC</button>
+                <button class="keys del-key">←</button>
+                <button class="keys help-key">?</button>
+                <button class="keys operator-key" char="/">÷</button>
+                <button class="keys operator-key" char="*">×</button>
+            </div>
+            <div class="keyrow">
+                <button class="keys num-key">7</button>
+                <button class="keys num-key">8</button>
+                <button class="keys num-key">9</button>
+                <button class="keys pi-key">π</button>
+                <button class="keys operator-key" char="-">-</button>
+            </div>
+            <div class="keyrow">
+                <button class="keys num-key">4</button>
+                <button class="keys num-key">5</button>
+                <button class="keys num-key">6</button>
+                <button class="keys num-key">.</button>
+                <button class="keys operator-key" char="+">+</button>
+            </div>
+            <div class="keyrow">
+                <button class="keys num-key">1</button>
+                <button class="keys num-key">2</button>
+                <button class="keys num-key">3</button>
+                <button class="keys num-key">0</button>
+                <button class="keys equals-key">=</button>
+            </div>
+        </div>
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage()
+        }
+
+        piapi.refreshScreen()
+
+
+        $(".help-key").click(function () {
+            location.reload()
+        })
+        $("#backBtn").click(function () {
+            location.href = "./main.html?refresh=1"
+        })
+
+        var resultFlag = false;
+        function getResult() {
+            try {
+                var result = eval($("#numInput").val())
+                if (result == "Infinity") {
+                    result = "不能除以零哦~";
+                }
+
+                $("#numInput").val(result);
+            } catch (err) {
+                if (err instanceof SyntaxError) {
+                    $("#numInput").val("语法错误");
+                } else {
+                    $("#numInput").val("错误");
+                }
+
+            }
+            resultFlag = true;
+            upd();
+        }
+        $(".num-key").click(function () {
+            if (resultFlag) {
+                $("#numInput").val($(this).text());
+                resultFlag = false;
+            } else {
+                $("#numInput").val($("#numInput").val() + $(this).text());
+            }
+            upd();
+        });
+        $(".ac-key").click(function () {
+            $("#numInput").val("");
+            upd();
+        })
+        $(".del-key").click(function () {
+            $("#numInput").val($("#numInput").val().substring(0, $("#numInput").val().length - 1))
+            resultFlag = false;
+            upd();
+        })
+        $(".operator-key").click(function () {
+            $("#numInput").val($("#numInput").val() + $(this).attr("char"));
+            resultFlag = false;
+            upd();
+        })
+        $(".pi-key").click(function () {
+            if (resultFlag) {
+                $("#numInput").val("3.14");
+                resultFlag = false;
+            } else {
+                $("#numInput").val($("#numInput").val() + "3.14");
+            }
+            upd();
+        })
+        $(".equals-key").click(getResult)
+        
+    </script>
+</body>
+
+</html>
