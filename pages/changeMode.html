@@ -35,6 +35,7 @@
             两者的区别是：<br>
             web分支（也就是当前分支）使用python和html开发，基于Google Chromium，开发非常方便，但启动慢，而且性能开销高。<br>
             master分支全部采用python开发，更流畅，但开发成本略高。<br>
+            注意：点击切换分支后，将撤销本分支的全部更改（即运行：git checkout master）
         </p>
         <div class="text-center">
             <button id="checkout">切换为master分支</button>
@@ -52,23 +53,42 @@
             location.href = "./main.html?refresh=1";
         });
         $("#checkout").click(function () {
+            $("#checkout").hide();
+
             $("#main").html("正在切换分支，请勿断电或重启...");
             upd();
             setTimeout(() => {
-                $("#main").html($("#main").html() + "<br>正在撤销本地更改...");
+                $("#main").html("正在撤销本地更改...<br>（运行命令：git checkout .）");
                 upd();
                 setTimeout(() => {
                     piapi.runCmd("git checkout .", function (res) {
                         setTimeout(() => {
-                            $("#main").html($("#main").html() + "<br>" + "本地更改撤销成功！<br>正在切换分支...");
+                            $("#main").html("本地更改撤销成功！<br>正在切换分支（可能需要较长时间）...<br>（运行命令：git checkout master）...");
                             upd();
                             setTimeout(() => {
-                                jsapi.log("okk")
-                            }, 1000);
+                                piapi.runCmd("git checkout web", function(res){
+                                    setTimeout(() => {
+                                        $("#main").html("切换分支完毕！即将重启软件...<br>git的输出结果为：<br>"+res.data);
+                                        upd();
+                                        setTimeout(() => {
+                                            var pythoncode = "os.system('sudo python3 restart.py')\n" +
+                                            "pid = os.getpid()\n" +
+                                            "print('结束pid : ',pid)\n" +
+                                            "os.kill(pid,signal.SIGKILL)\n";
+                                            piapi.runPython(pythoncode,function(res){
+                                                setTimeout(() => {
+                                                    $("#main").html("正在重启软件...");
+                                                    upd();
+                                                }, 500);
+                                            })
+                                        }, 1500);
+                                    }, 500);
+                                })
+                            }, 1500);
                         }, 500);
                     })
-                }, 2000);
-            }, 2000);
+                }, 1500);
+            }, 1500);
 
         })
 
