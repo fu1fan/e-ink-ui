@@ -72,7 +72,7 @@ class GeneralSettingsPage(lib.Pages.ListPage):
         self.book.base.env.Screen.display(Image.open("resources/images/raspberry.jpg"))
         self.book.base.env.quit()
         os.popen("git checkout .")
-        os.system("sudo python3 restart.py &")
+        os.system("python3 main.py &")
         os.kill(os.getpid(), signal.SIGKILL)
 
 
@@ -95,7 +95,7 @@ class SystemSettingsPage(lib.Pages.ListPage):
         self.book.base.env.quit()
         os.popen("git checkout .")
         os.popen("git checkout web")
-        os.system("python3 main.py &")
+        os.system("sudo python3 restart.py &")
         os.kill(os.getpid(), signal.SIGKILL)
 
 
