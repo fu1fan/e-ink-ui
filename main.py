@@ -42,7 +42,7 @@ if __name__ == "__main__":
         for path in opening_image_paths:
             opening_images.append(Image.open(Path(path)))
         for i in opening_images:
-            env.Screen.display(i)
+            env.Screen.display_auto(i)
             env.Screen.wait_busy()
         if load_lock.n_waiting == 0:
             env.Screen.display_auto(Image.open("resources/images/loading.jpg"))
