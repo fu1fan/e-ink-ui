@@ -236,6 +236,9 @@
 
         if (GetUrlByParamName("text")){
             $("#input").val(GetUrlByParamName("text"));
+            // 页面滚动到最底部
+            $(window).scrollTop($(document).height());
+
             upd();
         }
 
