@@ -17,6 +17,8 @@ from .touchscreen import Clicked as _Clicked, \
 import os as _os
 from framework.struct import Base as _Base
 
+from enviroment.drivers import epd2in9_V2 as _epd2in9_V2, icnt86
+
 
 class Images:
     def __init__(self):
@@ -27,7 +29,7 @@ class Images:
 
 
 class Env:
-    def __init__(self, simulator):
+    def __init__(self):
         # locks
         self.display_lock = _threading.Lock()
 
@@ -35,7 +37,7 @@ class Env:
         self.fonts = {}
 
         # screen
-        self.Screen = simulator
+        self.Screen = _epd2in9_V2.Screen()
 
         # threadpool
         self.Pool = _threadpool.ThreadPool(20, print)
@@ -49,6 +51,10 @@ class Env:
         self.Touch.icnt_init()
         """
 
+        # touchscreen
+        self.Touch = icnt86.TouchDriver()
+        self.Touch.icnt_init()
+        
         self.TouchHandler = _TouchHandler(self)
 
         # themes

@@ -23,14 +23,15 @@ example_config = {
 }
 
 
-# 原来的主线程
 
-def main_thread():
+if __name__ == "__main__":
     time.sleep(0.5)
     print("Running In Develop Mode")
 
     configurator_main = configurator.Configurator()
     configurator_main.check(example_config, True)
+
+    env = enviroment.Env()
 
     load_lock = threading.Barrier(2)
 
@@ -40,17 +41,17 @@ def main_thread():
         for path in opening_image_paths:
             opening_images.append(Image.open(Path(path)))
         for i in opening_images:
-            env.Screen.display_auto(i)
+            env.Screen.display(i)
             env.Screen.wait_busy()
         if load_lock.n_waiting == 0:
             env.Screen.display_auto(Image.open("resources/images/loading.jpg"))
         load_lock.wait()
 
     env.Pool.add(opening)
-    """
+    
     touch_recoder_dev = enviroment.touchscreen.TouchRecoder()
     touch_recoder_old = enviroment.touchscreen.TouchRecoder()
-    """
+
 
     # plugins
     for plugin_dir in os.listdir("plugins"):
@@ -82,14 +83,9 @@ def main_thread():
     env.Now.active()
 
 
-"""
+
     while 1:  # 据说 while 1 的效率比 while True 高
         env.Touch.icnt_scan(touch_recoder_dev, touch_recoder_old)
         env.TouchHandler.handle(touch_recoder_dev, touch_recoder_old)
-"""
 
-if __name__ == "__main__":
-    simulator = enviroment.Simulator()
-    env = enviroment.Env(simulator)
-    env.Pool.add(main_thread)
-    simulator.start(env)
+
