@@ -3,7 +3,7 @@ import time as _time
 from queue import LifoQueue as _LifoQueue
 
 # 模拟器GUI wxpython
-import wx as _wx
+# import wx as _wx
 
 from PIL import Image as _Image, \
     ImageFont as _ImageFont
@@ -16,72 +16,6 @@ from .touchscreen import Clicked as _Clicked, \
     TouchRecoder as _TouchRecoder
 import os as _os
 from framework.struct import Base as _Base
-
-
-# 模拟器屏幕
-class Simulator:
-    def start(self, env):
-        self.env = env
-        self.touch_recoder_dev = _TouchRecoder()
-        self.touch_recoder_old = _TouchRecoder()
-        # 创建窗口(296x128)
-        self.app = _wx.App()
-        self.frame = _wx.Frame(None, title="水墨屏模拟器 v2.0 by xuanzhi33", size=(296, 160))
-
-        # 背景为黑色图片
-        bmp = _wx.Bitmap("resources/images/simplebytes.jpg")
-
-        self.staticbit = _wx.StaticBitmap(self.frame, -1, bmp)
-
-        # 绑定按下鼠标
-        self.frame.Bind(_wx.EVT_LEFT_DOWN, self.mouseDown)
-        # 绑定松开鼠标
-        self.frame.Bind(_wx.EVT_LEFT_UP, self.mouseUp)
-
-        self.frame.Show()
-
-        self.app.MainLoop()
-
-    def mouseDown(self, event):
-        x = event.GetX()
-        y = event.GetY()
-        self.touch_recoder_old.Touch = False
-        self.touch_recoder_dev.Touch = True
-        self.touch_recoder_dev.X[0] = x
-        self.touch_recoder_dev.Y[0] = y
-        self.env.TouchHandler.handle(self.touch_recoder_dev, self.touch_recoder_old)
-
-    def mouseUp(self, event):
-        x = event.GetX()
-        y = event.GetY()
-        self.touch_recoder_old.Touch = True
-        self.touch_recoder_dev.Touch = False
-        self.touch_recoder_dev.X[0] = x
-        self.touch_recoder_dev.Y[0] = y
-        self.env.TouchHandler.handle(self.touch_recoder_dev, self.touch_recoder_old)
-
-    def updateImage(self, image: _Image):
-
-        def bitmapThreading():
-            wximg = _wx.Image(296, 128, image.convert("RGB").tobytes())
-            bmp = _wx.Bitmap(wximg)
-            self.staticbit.SetBitmap(bmp)
-        _threading.Thread(target=bitmapThreading).start()
-
-    def display(self, image: _Image):
-        self.updateImage(image)
-
-    def display_patial(self, image: _Image):
-        self.updateImage(image)
-
-    def display_auto(self, image: _Image):
-        self.updateImage(image)
-
-    def wait_busy(self):
-        pass
-
-    def quit(self):
-        pass
 
 
 class Images:
