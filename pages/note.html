@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -6,142 +7,62 @@
     <link rel="stylesheet" href="./src/bootstrap.min.css">
     <link rel="stylesheet" href="./src/paper.css">
     <title>记事本</title>
-    <style>
-        button,
-        button:hover,
-        button:active,
-        button:focus{
-            border: none;
-        }
-
-        #keyboard{
-            width: 375px;
-        }
-        #textInp{
-            border-bottom: 1px solid black;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-        }
-    </style>
 </head>
+
 <body>
-    <div id="textInp" class="pl-1 pr-1"></div>
-    <div id="keyboard" class="p-1 mt-5">
-        <div class="keyrow">
-            <button class="keys" shift="!">1</button>
-            <button class="keys" shift="@">2</button>
-            <button class="keys" shift="#">3</button>
-            <button class="keys" shift="$">4</button>
-            <button class="keys" shift="%">5</button>
-            <button class="keys" shift="^">6</button>
-            <button class="keys" shift="&">7</button>
-            <button class="keys" shift="*">8</button>
-            <button class="keys" shift="(">9</button>
-            <button class="keys" shift=")">0</button>
-            <button class="keys" shift="_">-</button>
-            <button class="keys" shift="+">=</button>
-            <button class="keys" shift="`">~</button>
-        </div>
-        <div class="keyrow">
-            <button class="keys" shift="Q">q</button>
-            <button class="keys" shift="W">w</button>
-            <button class="keys" shift="E">e</button>
-            <button class="keys" shift="R">r</button>
-            <button class="keys" shift="T">t</button>
-            <button class="keys" shift="Y">y</button>
-            <button class="keys" shift="U">u</button>
-            <button class="keys" shift="I">i</button>
-            <button class="keys" shift="O">o</button>
-            <button class="keys" shift="P">p</button>
-            <button class="keys" shift="{">[</button>
-            <button class="keys" shift="}">]</button>
-            <button class="keys" shift="|">\</button>
-        </div>
-        <div class="keyrow">
-            <button class="keys" shift="A">a</button>
-            <button class="keys" shift="S">s</button>
-            <button class="keys" shift="D">d</button>
-            <button class="keys" shift="F">f</button>
-            <button class="keys" shift="G">g</button>
-            <button class="keys" shift="H">h</button>
-            <button class="keys" shift="J">j</button>
-            <button class="keys" shift="K">k</button>
-            <button class="keys" shift="L">l</button>
-            <button class="backspace">&lt;</button>
-            <button class="keys" shift=":">;</button>
-            <button class="keys" shift='"'>'</button>
-            <button class="enter">OK</button>
-        </div>
-        <div class="keyrow">
-            <button class="keys" shift="Z">z</button>
-            <button class="keys" shift="X">x</button>
-            <button class="keys" shift="C">c</button>
-            <button class="keys" shift="V">v</button>
-            <button class="keys" shift="B">b</button>
-            <button class="keys" shift="N">n</button>
-            <button class="keys" shift="M">m</button>
-            <button class="space">空格</button>
-            <button class="shift">↑</button>
-            <button class="keys" shift="&lt;">?</button>
-            <button class="keys" shift="&gt;">.</button>
-            <button class="keys" shift="?">/</button>
-        </div>
+    <div id="head">
+        <span><a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> 记事本</span>
+    </div>
+    <div class="container">
+        <p id="main">点击输入文字...</p>
+        <button id="cnkbd">中文键盘</button> <button id="enkbd">英文键盘</button>
     </div>
     <script src="./src/jquery.min.js"></script>
     <script src="./src/piapi.js"></script>
     <script>
-        function upd(){
-            piapi.updateImage();
+        function upd() {
+            piapi.updateImage()
         }
-        piapi.refreshScreen();
-        
-        var shift = false;
-        var capslock = false;
-        //点击shift键时，按键的html与shift属性值互换
-        $(".shift").click(function(){
-            if (!shift&&!capslock) {
-                shiftSwitch();
-            } else if (shift&&!capslock) {
-                capslock = true;
-                $(".shift").css("transform","rotate(45deg)");
-                upd();
-            } else {
-                shiftSwitch();
-                capslock = false;
-                $(".shift").css("transform","rotate(0deg)");
-            }
-        })
-        function shiftSwitch(){
-            $(".keys").each(function(){
-                    var html = $(this).html();
-                    $(this).html($(this).attr("shift"));
-                    $(this).attr("shift",html);
-            })
-            shift = !shift;
-            upd();
+
+        function GetUrlByParamName(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var URL = decodeURI(window.location.search);
+            var r = URL.substr(1).match(reg);
+            if (r != null) {
+                //decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码  
+                return decodeURI(r[2]);
+            };
+            return null;
         }
-        //点击backspace键时，删除输入框中的内容
-        $(".backspace").click(function(){
-            $("#textInp").html($("#textInp").html().substring(0,$("#textInp").html().length-1));
-            upd();
-        })
-        //点击空格键时，输入框中添加空格
-        $(".space").click(function(){
-            $("#textInp").html($("#textInp").html()+" ");
-        })
-        //点击按键时，输入框中添加按键的内容
-        $(".keys").click(function(){
-            $("#textInp").html($("#textInp").html()+$(this).html());
-            if (shift&&!capslock) shiftSwitch();
-            upd();
+
+        var receivedText = GetUrlByParamName("text");
+
+        if (receivedText) {
+            $("#main").html(receivedText);
+            localStorage.notetext = receivedText;
+        }else if (localStorage.notetext) {
+            $("#main").html(localStorage.notetext)
+        }
+
+        $("#main").click(function () {
+            location.href = "./keyboard.html?from=note.html&text=" + $("#main").html();
         })
 
-        $(window).scroll(upd);
-        $("#enter").click(function(){
+        $("#cnkbd").click(function () {
+            location.href = "./keyboard-cn.html?from=note.html&text=" + $("#main").html();
+        })
+
+        $("#enkbd").click(function () {
+            location.href = "./keyboard.html?from=note.html&text=" + $("#main").html();
+        })
+
+        $("#backBtn").click(function () {
             location.href = "./main.html?refresh=1";
         })
+
+        upd()
+
     </script>
 </body>
+
 </html>

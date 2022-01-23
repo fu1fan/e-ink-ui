@@ -230,6 +230,15 @@
             return null;
         }
 
+        $("#input").click(function (){
+            location.href = "./keyboard.html?from=main.html";
+        })
+
+        if (GetUrlByParamName("text")){
+            $("#input").val(GetUrlByParamName("text"));
+            upd();
+        }
+
         if (GetUrlByParamName("refresh") == "1") {
             upd();
         }
