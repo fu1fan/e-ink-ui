@@ -321,7 +321,7 @@ class ThemeBase(_Base):
         super().active(refresh)
 
     def open_applist(self):
-        self.env.open_app("应用抽屉")
+        self.env.open_app("应用抽屉", False)
 
     def open_setting(self):
         self.env.open_app("设置")
