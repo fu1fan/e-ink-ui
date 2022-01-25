@@ -181,6 +181,7 @@ class Env:
             self.display(refresh="f")
         else:
             self._show_left_back = False
+            self.display(refresh="f")
 
     def back_right(self, show: bool):
         if show:
@@ -188,6 +189,7 @@ class Env:
             self.display(refresh="f")
         else:
             self._show_right_back = False
+            self.display(refresh="f")
 
     def home_bar(self):
         if self._home_bar:
