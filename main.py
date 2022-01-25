@@ -179,7 +179,7 @@ if __name__ == "__main__":
                     # 需要局部刷新
                     imgOld[0] = screenshotImg
                     print("屏幕局部刷新...")
-                    env.Screen.display_auto(screenshotImg)
+                    env.Screen.display_partial(screenshotImg)
                 else:
                     print("屏幕未变化，不刷新。")
 

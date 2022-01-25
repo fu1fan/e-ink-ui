@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>模板</title>
+</head>
+
+<body>
+    <div class="head-fixed-top">
+        <span><a href="javascript:backToMain()">&nbsp;&lt;</a> 标题 &emsp;<span id="time">00:00</span>&emsp;<span id="net"></span></span>
+    </div>
+    <div class="container mt-4">
+
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage();
+        }
+        function backToMain() {
+            window.location.href = "./main.html?refresh=1";
+        }
+
+        function updateTime() {
+            var date = new Date();
+            var h = date.getHours();
+            var m = date.getMinutes();
+            //auto add 0
+            h = h < 10 ? '0' + h : h;
+            m = m < 10 ? '0' + m : m;
+            var time = h + ":" + m;
+
+            if (time != $("#time").text()) {
+                $("#time").text(time);
+                upd();
+            }
+        }
+
+        var date = new Date();
+        var h = date.getHours();
+        var m = date.getMinutes();
+        //auto add 0
+        h = h < 10 ? '0' + h : h;
+        m = m < 10 ? '0' + m : m;
+        var time = h + ":" + m;
+        $("#time").text(time);
+
+        setInterval(updateTime, 5000);
+
+
+        function whenOnline() {
+            $("#net").html('<i class="fa fa-wifi" aria-hidden="true"></i>');
+        }
+        function whenOffline() {
+            $("#net").html('×');
+        }
+        if (navigator.onLine) {
+            whenOnline();
+        } else {
+            whenOffline();
+        }
+        $(window).on("online", function () {
+            whenOnline();
+            upd();
+        });
+        $(window).on("offline", function () {
+            whenOffline();
+            upd();
+        });
+        
+        upd();
+        $(window).scroll(upd);
+
+
+    </script>
+</body>
+
+</html>

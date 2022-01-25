@@ -57,3 +57,11 @@ a, a:hover, a:active {
 * {
     font-family: px16;
 }
+
+.head-fixed-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: white;
+    z-index: 100;
+}

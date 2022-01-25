@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>电源选项</title>
+    <style>
+        p {
+            font-family: px12;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="head-fixed-top">
+        <span><a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> 电源选项</span>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-6">
+                <p class="mt-1">
+                    您可以点击右侧的按钮对设备进行相应的操作。<br>
+                    点击“关机”按钮，将立即关闭设备。<br>
+                    点击“重启”按钮，将立即重启设备。<br>
+                    点击“停止”按钮，则会停止E-Ink UI程序的运行，但并不会关闭电源。
+                </p>
+            </div>
+            <div class="col-6">
+                <button id="poweroff"><i class="fa fa-power-off" aria-hidden="true"></i> 关机</button><br>
+                <button id="reboot" class="mt-1"><i class="fa fa-refresh" aria-hidden="true"></i> 重启</button><br>
+                <button id="stop" class="mt-1"><i class="fa fa-stop" aria-hidden="true"></i> 停止</button>
+            </div>
+        </div>
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage();
+        }
+        function backToMain() {
+            window.location.href = "./main.html?refresh=1";
+        }
+        upd();
+        $(window).scroll(upd)
+
+        $("#stop").click(function () {
+            piapi.stop()
+        })
+        $("#poweroff").click(function () {
+            piapi.poweroff()
+        })
+        $("#reboot").click(function () {
+            piapi.reboot()
+        })
+
+    </script>
+</body>
+
+</html>

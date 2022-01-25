@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>系统设置</title>
+</head>
+
+<body>
+    <div class="head-fixed-top">
+        <span><a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> 系统设置</span>
+    </div>
+    <div class="container text-center mt-4">
+        <div id="result" class="mt-1"></div>
+        <div class="mt-1">
+            <button id="update"><i class="fa fa-arrow-up" aria-hidden="true"></i> 软件更新</button>
+            <button id="changeMode"><i class="fa fa-exchange" aria-hidden="true"></i> 切换分支</button>
+        </div>
+        <div class="mt-1">
+            <button id="netInfo"><i class="fa fa-wifi" aria-hidden="true"></i> 网络信息</button>
+            <button id="about"><i class="fa fa-info" aria-hidden="true"></i> 软件信息</button>
+        </div>
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage();
+        }
+        function backToMain() {
+            window.location.href = "./main.html?refresh=1";
+        }
+        upd();
+        $(window).scroll(upd)
+
+        $("#changeMode").click(function () {
+            location.href = "./changeMode.html";
+        })
+        $("#update").click(function(){
+            location.href = "./update.html";
+        })
+
+        $("#getInfo").click(function () {
+            piapi.getInfo(function (data) {
+                data = JSON.parse(data.data)
+                var html = "设备信息<br>";
+                for (var i in data) {
+                    html += i + "：" + data[i] + "<br>";
+                }
+
+                $("#result").html(html);
+
+                setTimeout(() => {
+                    upd();
+                }, 200);
+            })
+        })
+
+        $("#netInfo").click(function(){
+            location.href = "./netInfo.html";
+        })
+    </script>
+</body>
+
+</html>

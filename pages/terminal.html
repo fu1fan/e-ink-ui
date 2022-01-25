@@ -1,0 +1,192 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>终端</title>
+    <style>
+        p{
+            font-family: px12;
+            font-size: 12px;
+        }
+        .head-fixed-top{
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="head-fixed-top">
+        <span><a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> 终端</span>
+    </div>
+    <div class="container mt-4">
+        <div id="result" class="mb-1"></div>
+        <input type="text" id="input" class="mb-1">
+        <div class="mb-1 text-center">
+            <button id="dih">&emsp;·&emsp;</button> <button id="backspace">&emsp;←&emsp;</button> <button
+                id="next">&emsp;→&emsp;</button> <button id="dah">&emsp;-&emsp;</button>
+        </div>
+        <div class="mb-1 text-center">
+            <button id="runBtn"> &emsp; 执行 &emsp; </button>
+            <button id="clearBtn"> &emsp; 清空 &emsp; </button>
+        </div>
+        <p class="mt-1">
+            终端使用说明：<br>
+            这是一个简易的终端，可以直接在设备上执行终端命令。<br>
+            你有两种方式来输入命令，第一种方式是采用屏幕键盘，您只需点击屏幕上方的输入框唤起屏幕键盘，在输入完毕后，点击“OK”即可完成输入，点击“执行”按钮，将立即执行命令。<br>
+            第二种方式是采用摩尔斯键盘，你可能已经注意到了输入框的下方有4个按钮。第1个按钮用来输入“.”的，第2个按钮是退格键，第3个按钮是空格键，第4个按钮用来输入“-”的。您可通过点击第1和第4个按钮的方式来输入摩尔斯代码。注意，输入的内容并不会立即显示在屏幕上，而是要等到您点击第3个按钮的时候，才会转换成英文字母并出现在输入框中。输入“.-.-”并点击第3个按钮即可执行命令。
+        </p>
+        <button class="w-100" id="backToTop">点击返回页面顶部</button>
+        <br>
+        <br>
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage();
+        }
+        function backToMain() {
+            window.location.href = "./main.html?refresh=1";
+        }
+        upd();
+        $(window).scroll(upd)
+
+
+        var morseToABC = {
+            ".-": "a",
+            "-...": "b",
+            "-.-.": "c",
+            "-..": "d",
+            ".": "e",
+            "..-.": "f",
+            "--.": "g",
+            "....": "h",
+            "..": "i",
+            ".---": "j",
+            "-.-": "k",
+            ".-..": "l",
+            "--": "m",
+            "-.": "n",
+            "---": "o",
+            ".--.": "p",
+            "--.-": "q",
+            ".-.": "r",
+            "...": "s",
+            "-": "t",
+            "..-": "u",
+            "...-": "v",
+            ".--": "w",
+            "-..-": "x",
+            "-.--": "y",
+            "--..": "z",
+            "-----": "0",
+            ".----": "1",
+            "..---": "2",
+            "...--": "3",
+            "....-": "4",
+            ".....": "5",
+            "-....": "6",
+            "--...": "7",
+            "---..": "8",
+            "----.": "9",
+            ".-.-.-": ".",
+            "--..--": ",",
+            "..--..": "?",
+            ".----.": "'",
+            "-.-.--": "!",
+            "-..-.": "/",
+            "-.--.": "(",
+            "-.--.-": ")",
+            ".-...": "&",
+            "---...": ":",
+            "-.-.-.": ";",
+            "-...-": "=",
+            ".-.-.": "+",
+            "-....-": "-",
+            "..--.-": "_",
+            ".-..-.": "@",
+            "...-..-": "$",
+            ".--.-.": "\"",
+            "..--": " ",
+            ".-.-": "\n"
+        }
+        var currentMorse = "";
+        var inputId = "input";
+        function sendCmd() {
+            piapi.runCmd($("#input").val(), function (data) {
+                $("#result").html(data.data);
+                setTimeout(upd, 200);
+            })
+            $("#input").val("");
+        }
+        $("#dih").click(function () {
+            currentMorse += ".";
+        });
+        $("#dah").click(function () {
+            currentMorse += "-";
+        });
+        $("#next").click(function () {
+            if (currentMorse == "") {
+                $("#" + inputId).val($("#" + inputId).val() + " ");
+            } else if (currentMorse == ".-.-") {
+                currentMorse = "";
+                sendCmd();
+            } else {
+                var abc = morseToABC[currentMorse];
+                if (abc == undefined) {
+                    abc = "";
+                }
+                $("#" + inputId).val($("#" + inputId).val() + abc);
+                upd();
+                currentMorse = "";
+            }
+        });
+        $("#backspace").click(function () {
+            if (currentMorse == "") {
+                var val = $("#" + inputId).val();
+                $("#" + inputId).val(val.substring(0, val.length - 1));
+                upd();
+            } else {
+                currentMorse = "";
+            }
+        });
+
+        $("#input").click(function () {
+            location.href = "./keyboard.html?from=terminal.html";
+        })
+
+        function GetUrlByParamName(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var URL = decodeURI(window.location.search);
+            var r = URL.substr(1).match(reg);
+            if (r != null) {
+                //decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码  
+                return decodeURI(r[2]);
+            };
+            return null;
+        }
+
+        if (GetUrlByParamName("text")) {
+            $("#input").val(GetUrlByParamName("text"));
+        }
+
+        $("#backToTop").click(function () {
+            $(window).scrollTop(0);
+        })
+
+        $("#clearBtn").click(function () {
+            $("#input").val("");
+            upd();
+        })
+        $("#runBtn").click(function () {
+            sendCmd();
+        })
+        
+    </script>
+</body>
+
+</html>

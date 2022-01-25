@@ -29,27 +29,12 @@
         </div>
         <div class="mb-1">
             <button id="note"><i class="fa fa-file" aria-hidden="true"></i> 记事本</button>
-
+            <button id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i> 刷新页面</button>
         </div>
         <div class="mb-1">
-            <button id="update"><i class="fa fa-arrow-up" aria-hidden="true"></i> 软件更新</button>
-            <button id="changeMode"><i class="fa fa-exchange" aria-hidden="true"></i> 切换分支</button>
-        </div>
-        <div class="mb-1">
-            <button id="refresh">刷新页面</button>
-            <button id="upda">刷新屏幕</button>
-            <button id="getInfo">设备信息</button>
-        </div>
-        <div class="mb-1">
-            <button id="poweroff"><i class="fa fa-power-off" aria-hidden="true"></i> 关机</button>
-            <button id="reboot"><i class="fa fa-refresh" aria-hidden="true"></i> 重启</button>
-            <button id="stop"><i class="fa fa-stop" aria-hidden="true"></i> 停止程序</button>
-        </div>
-        <div id="result" class="mb-1"></div>
-        <input type="text" id="input" class="mb-1">
-        <div class="mb-1">
-            <button id="dih">&emsp;·&emsp;</button> <button id="backspace">&emsp;←&emsp;</button> <button
-                id="next">&emsp;→&emsp;</button> <button id="dah">&emsp;-&emsp;</button>
+            <button id="settings"><i class="fa fa-wrench" aria-hidden="true"></i> 系统设置</button>
+            <button id="terminal"><i class="fa fa-terminal" aria-hidden="true"></i> 终端</button>
+            <button id="power"><i class="fa fa-power-off" aria-hidden="true"></i> 电源</button>
         </div>
     </div>
 
@@ -94,130 +79,9 @@
             piapi.refreshScreen();
         });
 
-        $("#getInfo").click(function () {
-            piapi.log("查询info中")
-            piapi.getInfo(function (data) {
-                data = JSON.parse(data.data)
-                var html = "设备信息<br>";
-                for (var i in data) {
-                    html += i + "：" + data[i] + "<br>";
-                }
-
-                $("#result").html(html);
-                setTimeout(upd, 200);
-            })
-        })
-        $("#stop").click(function () {
-            piapi.stop()
-        })
-        $("#poweroff").click(function () {
-            piapi.poweroff()
-        })
-        $("#reboot").click(function () {
-            piapi.reboot()
-        })
         $("#reader").click(function () {
             location.href = "./reader.html"
         })
-
-        var morseToABC = {
-            ".-": "a",
-            "-...": "b",
-            "-.-.": "c",
-            "-..": "d",
-            ".": "e",
-            "..-.": "f",
-            "--.": "g",
-            "....": "h",
-            "..": "i",
-            ".---": "j",
-            "-.-": "k",
-            ".-..": "l",
-            "--": "m",
-            "-.": "n",
-            "---": "o",
-            ".--.": "p",
-            "--.-": "q",
-            ".-.": "r",
-            "...": "s",
-            "-": "t",
-            "..-": "u",
-            "...-": "v",
-            ".--": "w",
-            "-..-": "x",
-            "-.--": "y",
-            "--..": "z",
-            "-----": "0",
-            ".----": "1",
-            "..---": "2",
-            "...--": "3",
-            "....-": "4",
-            ".....": "5",
-            "-....": "6",
-            "--...": "7",
-            "---..": "8",
-            "----.": "9",
-            ".-.-.-": ".",
-            "--..--": ",",
-            "..--..": "?",
-            ".----.": "'",
-            "-.-.--": "!",
-            "-..-.": "/",
-            "-.--.": "(",
-            "-.--.-": ")",
-            ".-...": "&",
-            "---...": ":",
-            "-.-.-.": ";",
-            "-...-": "=",
-            ".-.-.": "+",
-            "-....-": "-",
-            "..--.-": "_",
-            ".-..-.": "@",
-            "...-..-": "$",
-            ".--.-.": "\"",
-            "..--": " ",
-            ".-.-": "\n"
-        }
-        var currentMorse = "";
-        var inputId = "input";
-        function sendCmd() {
-            piapi.runCmd($("#input").val(), function (data) {
-                $("#result").html(data.data);
-                setTimeout(upd, 200);
-            })
-            $("#input").val("");
-        }
-        $("#dih").click(function () {
-            currentMorse += ".";
-        });
-        $("#dah").click(function () {
-            currentMorse += "-";
-        });
-        $("#next").click(function () {
-            if (currentMorse == "") {
-                $("#" + inputId).val($("#" + inputId).val() + " ");
-            } else if (currentMorse == ".-.-") {
-                currentMorse = "";
-                sendCmd();
-            } else {
-                var abc = morseToABC[currentMorse];
-                if (abc == undefined) {
-                    abc = "";
-                }
-                $("#" + inputId).val($("#" + inputId).val() + abc);
-                upd();
-                currentMorse = "";
-            }
-        });
-        $("#backspace").click(function () {
-            if (currentMorse == "") {
-                var val = $("#" + inputId).val();
-                $("#" + inputId).val(val.substring(0, val.length - 1));
-                upd();
-            } else {
-                currentMorse = "";
-            }
-        });
 
         function GetUrlByParamName(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -230,27 +94,15 @@
             return null;
         }
 
-        $("#input").click(function (){
-            location.href = "./keyboard.html?from=main.html";
-        })
-
-        if (GetUrlByParamName("text")){
-            $("#input").val(GetUrlByParamName("text"));
-            // 页面滚动到最底部
-            $(window).scrollTop($(document).height());
-
-            upd();
-        }
-
         if (GetUrlByParamName("refresh") == "1") {
             upd();
         }
 
         function whenOnline() {
-            $("#net").html('<i class="fa fa-wifi" aria-hidden="true"></i> WiFi');
+            $("#net").html('<i class="fa fa-wifi" aria-hidden="true"></i> Online');
         }
         function whenOffline() {
-            $("#net").html('<i class="fa fa-signal" aria-hidden="true"></i> 4G');
+            $("#net").html('Offline');
         }
         if (navigator.onLine) {
             whenOnline();
@@ -281,12 +133,6 @@
         $("#testpage").click(function () {
             location.href = "./test.html";
         })
-        $("#changeMode").click(function () {
-            location.href = "./changeMode.html";
-        })
-        $("#update").click(function(){
-            location.href = "./update.html";
-        })
         $("#calc").click(function(){
             location.href = "./calc.html";
         })
@@ -295,6 +141,18 @@
         })
         $("#note").click(function(){
             location.href = "./note.html";
+        })
+        $("#terminal").click(function(){
+            location.href = "./terminal.html";
+        })
+        $("#settings").click(function(){
+            location.href = "./settings.html";
+        })
+        $("#about").click(function(){
+            location.href = "./about.html";
+        })
+        $("#power").click(function(){
+            location.href = "./power.html";
         })
 
         $(window).scroll(upd);
