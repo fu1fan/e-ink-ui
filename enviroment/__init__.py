@@ -2,8 +2,6 @@ import threading as _threading
 import time as _time
 from queue import LifoQueue as _LifoQueue
 
-# 模拟器GUI wxpython
-# import wx as _wx
 
 from PIL import Image as _Image, \
     ImageFont as _ImageFont
@@ -54,7 +52,7 @@ class Env:
         # touchscreen
         self.Touch = icnt86.TouchDriver()
         self.Touch.icnt_init()
-        
+
         self.TouchHandler = _TouchHandler(self)
 
         # themes
@@ -142,6 +140,8 @@ class Env:
             raise KeyError("The targeted application is not found.")
 
     def back(self) -> bool:
+        self._show_left_back = False
+        self._show_right_back = False
         if self.back_stack.empty():
             return self.Now.back()
         else:
@@ -164,14 +164,24 @@ class Env:
         self.back_stack.put(item)
 
     def back_left(self, show: bool):
-        if show != self._show_left_back:
-            self._show_left_back = show
+        if show:
+            self._show_left_back = True
+            self._left_temp = True
             self.display(refresh=False)
+        else:
+            self._show_left_back = False
+            if self._right_temp:
+                self.display(refresh=False)
 
     def back_right(self, show: bool):
-        if show != self._show_right_back:
-            self._show_right_back = show
+        if show:
+            self._show_right_back = True
+            self._right_temp = True
             self.display(refresh=False)
+        else:
+            self._show_right_back = False
+            if self._right_temp:
+                self.display(refresh=False)
 
     def home_bar(self):
         if self._home_bar:
