@@ -45,12 +45,12 @@
             $("#main").html("正在更新软件，请勿断电或重启...");
             upd();
             setTimeout(() => {
-                $("#main").html("正在撤销本地更改...<br>（运行命令：git checkout .）");
+                $("#main").html("正在撤销本地更改...<br>（运行命令：git checkout . && git clean -f）");
                 upd();
                 setTimeout(() => {
-                    piapi.runCmd("git checkout .", function (res) {
+                    piapi.runCmd("git checkout . && git clean -f", function (res) {
                         setTimeout(() => {
-                            $("#main").html("本地更改撤销成功！<br>正在拉取新版本（可能需要较长时间）...<br>（运行命令：git pull）");
+                            $("#main").html(res.data+"<br>正在拉取新版本（可能需要较长时间）...<br>（运行命令：git pull）");
                             upd();
                             setTimeout(() => {
                                 piapi.runCmd("git pull", function(res){

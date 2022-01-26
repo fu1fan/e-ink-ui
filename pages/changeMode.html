@@ -26,7 +26,7 @@
             两者的区别是：<br>
             web分支（也就是当前分支）使用python和html开发，基于Google Chromium，开发非常方便，但启动慢，而且性能开销高。<br>
             master分支全部采用python开发，更流畅，但开发成本略高。<br>
-            注意：点击切换分支后，将撤销本分支的全部更改（即运行：git checkout .）
+            注意：点击切换分支后，将撤销本分支的全部更改（即运行：git checkout . && git clean -f）
         </p>
         <div class="text-center">
             <button id="checkout">切换为master分支</button>
@@ -49,12 +49,12 @@
             $("#main").html("正在切换分支，请勿断电或重启...");
             upd();
             setTimeout(() => {
-                $("#main").html("正在撤销本地更改...<br>（运行命令：git checkout .）");
+                $("#main").html("正在撤销本地更改...<br>（运行命令：git checkout . && git clean -f）");
                 upd();
                 setTimeout(() => {
-                    piapi.runCmd("git checkout .", function (res) {
+                    piapi.runCmd("git checkout . && git clean -f", function (res) {
                         setTimeout(() => {
-                            $("#main").html("本地更改撤销成功！<br>正在切换分支（可能需要较长时间）...<br>（运行命令：git checkout master）...");
+                            $("#main").html(res.data+"<br>正在切换分支（可能需要较长时间）...<br>（运行命令：git checkout master）...");
                             upd();
                             setTimeout(() => {
                                 piapi.runCmd("git checkout master", function(res){
