@@ -35,22 +35,22 @@
         $(window).scroll(upd);
 
 
-        $("#refresh").click(function() {
+        $("#refresh").click(function () {
             location.reload();
         });
 
         setTimeout(function () {
-                piapi.getInfo(function (data) {
+            piapi.getInfo(function (data) {
 
-                    data = JSON.parse(data.data);
-    
-                    $("#ipAddr").text(data.ip);
-                    $("#wifi").text(data.WIFI);
-                
-                    setTimeout(() => {
-                        upd();
-                    }, 200);
-                })
+                data = JSON.parse(data.data);
+
+                $("#ipAddr").text(data.ip);
+                $("#wifi").text(data.WIFI);
+
+                setTimeout(() => {
+                    upd();
+                }, 200);
+            })
         }, 1500);
 
     </script>
