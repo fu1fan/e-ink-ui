@@ -15,7 +15,6 @@
         <span><a id="backBtn" href="javascript:backToMain()">&nbsp;&lt;</a> 系统设置</span>
     </div>
     <div class="container text-center mt-4">
-        <div id="result" class="mt-1"></div>
         <div class="mt-1">
             <button id="update"><i class="fa fa-arrow-up" aria-hidden="true"></i> 软件更新</button>
             <button id="changeMode"><i class="fa fa-exchange" aria-hidden="true"></i> 切换分支</button>
@@ -42,22 +41,6 @@
         })
         $("#update").click(function(){
             location.href = "./update.html";
-        })
-
-        $("#getInfo").click(function () {
-            piapi.getInfo(function (data) {
-                data = JSON.parse(data.data)
-                var html = "设备信息<br>";
-                for (var i in data) {
-                    html += i + "：" + data[i] + "<br>";
-                }
-
-                $("#result").html(html);
-
-                setTimeout(() => {
-                    upd();
-                }, 200);
-            })
         })
 
         $("#netInfo").click(function(){
