@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>模板</title>
+    <style>
+        .detail {
+            font-family: px12;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="head-fixed-top">
+        <span><a href="javascript:backToMain()">&nbsp;&lt;</a> E-Ink UI 软件信息</span>
+    </div>
+    <div class="container mt-4">
+        关于 E-Ink UI
+        <div class="detail mb-1">
+            作者：@fu1fan @xuanzhi33<br>
+            开源仓库：gitee.com/fu1fan/e-ink-ui
+        </div>
+        版本更新日志（最近10条）
+        <div id="gitlog" class="detail">
+            正在获取中，请稍等片刻……
+        </div>
+        <button id="backToTop" class="mt-2 mb-2 w-100">点击返回顶部</button>
+
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage();
+        }
+        function backToMain() {
+            window.location.href = "./main.html?refresh=1";
+        }
+
+        upd();
+        $(window).scroll(upd);
+
+
+        setTimeout(function () {
+            piapi.runCmd("git log --pretty=format:'%h %s %cr' -10", function (data) {
+
+                $("#gitlog").html(data.data);
+
+                setTimeout(() => {
+                    upd();
+                }, 1800);
+            })
+        }, 1500);
+
+        $("#backToTop").click(function () {
+            $(window).scrollTop(0);
+        })
+
+    </script>
+</body>
+
+</html>
