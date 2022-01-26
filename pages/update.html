@@ -50,7 +50,7 @@
                 setTimeout(() => {
                     piapi.runCmd("git checkout . && git clean -f", function (res) {
                         setTimeout(() => {
-                            $("#main").html(res.data+"<br>正在拉取新版本（可能需要较长时间）...<br>（运行命令：git pull）");
+                            $("#main").html(res.data+"正在拉取新版本（可能需要较长时间）...<br>（运行命令：git pull）");
                             upd();
                             setTimeout(() => {
                                 piapi.runCmd("git pull", function(res){

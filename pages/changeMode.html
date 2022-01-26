@@ -54,7 +54,7 @@
                 setTimeout(() => {
                     piapi.runCmd("git checkout . && git clean -f", function (res) {
                         setTimeout(() => {
-                            $("#main").html(res.data+"<br>正在切换分支（可能需要较长时间）...<br>（运行命令：git checkout master）...");
+                            $("#main").html(res.data+"正在切换分支（可能需要较长时间）...<br>（运行命令：git checkout master）...");
                             upd();
                             setTimeout(() => {
                                 piapi.runCmd("git checkout master", function(res){
