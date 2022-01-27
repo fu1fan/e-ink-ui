@@ -1,0 +1,133 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/paper.css">
+    <title>简单番茄钟</title>
+    <style>
+        .bignumber {
+            font-size: 32px;
+        }
+
+        .timeUnit,
+        .textSmall {
+            font-family: px12;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="head-fixed-top">
+        <span><a href="javascript:backToMain()">&nbsp;&lt;</a> 番茄钟 &emsp; &emsp; &emsp; <span class="textSmall">共获得了
+                <span id="tomatoNum" class="textSmall">0</span> 个番茄</span></span>
+    </div>
+    <div class="container mt-4 pt-1 text-center">
+        <div class="row">
+            <div class="col-6">
+                <div>
+                    <span id="isWorking" style="display: none;">&gt;</span>
+                    工作
+                </div>
+                <div id="workTime">
+                    <div id="workTimeSpan" class="bignumber">25</div>
+                    <div class="timeUnit">分钟</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div>
+                    <span id="isResting" style="display: none;">&gt;</span>
+                    休息
+                </div>
+                <div id="restTime">
+                    <div id="restTimeSpan" class="bignumber">5</div>
+                    <div class="timeUnit">分钟</div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 mb-1">
+            <button id="start">开始</button>
+            <button id="reset">重置</button>
+        </div>
+    </div>
+    <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
+    <script>
+        function upd() {
+            piapi.updateImage();
+        }
+        function backToMain() {
+            window.location.href = "./main.html?refresh=1";
+        }
+
+        $(window).scroll(upd);
+
+        if (!localStorage.tomatonum) {
+            localStorage.tomatonum = 0;
+        }
+        $("#tomatoNum").text(localStorage.tomatonum);
+
+        upd()
+
+        var timer;
+
+        $("#start").click(function () {
+            if ($(this).text() == "开始") {
+                $(this).text("暂停");
+                $("#reset").hide();
+                if ($("#isWorking").css("display") == "none" && $("#isResting").css("display") == "none") {
+                    $("#isWorking").show();
+                    $("#workTimeSpan").text(24);
+                }
+                $(window).scrollTop(0);
+                timer = setInterval(function () {
+                    if ($("#isResting").css("display") == "none") {
+                        var workTime = Number($("#workTimeSpan").text());
+                        if (workTime > 0) {
+                            $("#workTimeSpan").text(workTime - 1);
+                            upd();
+                        } else {
+                            $("#isWorking").hide();
+                            $("#isResting").show();
+                            $("#restTimeSpan").text(4);
+                            piapi.refreshScreen();
+                        }
+                    } else {
+                        var restTime = Number($("#restTimeSpan").text());
+                        if (restTime > 0) {
+                            $("#restTimeSpan").text(restTime - 1);
+                            upd();
+                        } else {
+                            $("#isResting").hide();
+                            $("#isWorking").show();
+                            $("#workTimeSpan").text("24");
+                            $("#restTimeSpan").text("5");
+                            localStorage.tomatonum = Number(localStorage.tomatonum) + 1;
+                            $("#tomatoNum").text(localStorage.tomatonum);
+                            piapi.refreshScreen();
+                        }
+                    }
+                }, 60000);
+            } else {
+                $(this).text("开始");
+                clearInterval(timer);
+                $("#reset").show();
+                upd();
+            }
+        })
+
+        $("#reset").click(function () {
+            $("#isWorking").hide();
+            $("#isResting").hide();
+            $("#workTimeSpan").text("25");
+            $("#restTimeSpan").text("5");
+            $(window).scrollTop(0);
+        })
+
+    </script>
+</body>
+
+</html>

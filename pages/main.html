@@ -22,8 +22,8 @@
         </div>
         <div class="mb-1">
             <button id="date"><i class="fa fa-calendar" aria-hidden="true"></i> 日期钟</button>
+            <button id="tomato"><i class="fa fa-hourglass" aria-hidden="true"></i> 番茄钟</button>
             <button id="yiyan"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> 一言</button>
-            <button id="testpage"><i class="fa fa-code" aria-hidden="true"></i> 测试页</button>
         </div>
         <div class="mb-1">
             <button id="calc"><i class="fa fa-calculator" aria-hidden="true"></i> 计算器</button>
@@ -31,7 +31,8 @@
         </div>
         <div class="mb-1">
             <button id="note"><i class="fa fa-file" aria-hidden="true"></i> 记事本</button>
-            <button id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i> 刷新页面</button>
+            <button id="testpage"><i class="fa fa-code" aria-hidden="true"></i> 测试页</button>
+            <button id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i> 刷新</button>
         </div>
         <div class="mb-1">
             <button id="settings"><i class="fa fa-wrench" aria-hidden="true"></i> 系统设置</button>
@@ -155,6 +156,9 @@
         })
         $("#power").click(function(){
             location.href = "./power.html";
+        })
+        $("#tomato").click(function(){
+            location.href = "./tomato.html";
         })
 
         $(window).scroll(upd);
