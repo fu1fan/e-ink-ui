@@ -27,7 +27,8 @@
         </div>
         <div class="mb-1">
             <button id="calc"><i class="fa fa-calculator" aria-hidden="true"></i> 计算器</button>
-            <button id="random"><i class="fa fa-random" aria-hidden="true"></i> 随机数生成器</button>
+            <button id="random"><i class="fa fa-random" aria-hidden="true"></i> 随机数</button>
+            <button id="2048"><i class="fa fa-gamepad" aria-hidden="true"></i> 2048</button>
         </div>
         <div class="mb-1">
             <button id="note"><i class="fa fa-file" aria-hidden="true"></i> 记事本</button>
@@ -159,6 +160,9 @@
         })
         $("#tomato").click(function(){
             location.href = "./tomato.html";
+        })
+        $("#2048").click(function(){
+            location.href = "./2048.html";
         })
 
         $(window).scroll(upd);

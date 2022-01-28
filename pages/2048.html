@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="./src/bootstrap.min.css">
     <link rel="stylesheet" href="./src/paper.css">
     <title>2048</title>
+    <style>
+        .gametable td {
+            text-align: center;
+            width: 40px;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,60 +22,75 @@
     <div class="row">
 
 
-        <div class="gamearea col-4">
-            <div class="row">
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-            </div>
-            <div class="row">
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-            </div>
-            <div class="row">
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-            </div>
-            <div class="row">
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-                <div class="col-3 grid">0</div>
-            </div>
+        <div class="gamearea col-6">
+            <table class="gametable">
+                <tbody>
+                    <tr>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                    </tr>
+                    <tr>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                    </tr>
+                    <tr>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                    </tr>
+                    <tr>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                        <td class="grid">0</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="gamecontrol col-8 text-center">
-            <button id="up">up</button><br>
+        <div class="gamecontrol col-6 text-center">
+            <button id="up">&nbsp;↑&nbsp;</button><br>
             <div class="mt-1 mb-1">
-                <button id="left">left</button> <button id="right">right</button><br>
+                <button id="left">&nbsp;←&nbsp;</button> <button id="right">&nbsp;→&nbsp;</button><br>
             </div>
-            <button id="down">down</button><br>
-            <button id="start" class="mt-1">start</button>
+            <button id="down">&nbsp;↓&nbsp;</button><br>
+            <button id="start" class="mt-2">重置</button>
         </div>
     </div>
     <script src="./src/jquery.min.js"></script>
+    <script src="./src/piapi.js"></script>
     <script>
+        function upd() {
+            piapi.updateImage();
+        }
+        function backToMain() {
+            window.location.href = "./main.html?refresh=1";
+        }
+
+        $(window).scroll(upd);
+
         var grid = [
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0]
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
         ]
 
 
-        function showGrid(){
-            $(".grid").each(function(index, element){
-                var num = grid[Math.floor(index/4)][index%4]
-                if(num == 0){
-                    $(element).text("□")
-                }else{
-                    $(element).text(num)
+        function showGrid() {
+            $(".grid").each(function (index, element) {
+                var num = grid[Math.floor(index / 4)][index % 4]
+                if (num == 0) {
+                    $(element).text("0").css("visibility", "hidden")
+                } else {
+                    $(element).text(num).css("visibility", "visible")
                 }
             });
+            upd()
         }
 
         //generate a random number between a and b
@@ -79,6 +100,12 @@
 
         //new game
         function startGame() {
+            grid = [
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0]
+            ]
             addTile()
             addTile()
             showGrid()
@@ -97,8 +124,8 @@
                 return
             }
             var index = randint(0, empty.length - 1)
-            var twoOrFour = randint(0, 1)*2 + 2
-            grid[empty[index][0]][empty[index][1]] = twoOrFour    
+            var twoOrFour = randint(0, 1) * 2 + 2
+            grid[empty[index][0]][empty[index][1]] = twoOrFour
         }
 
         $("#start").click(function () {
@@ -106,9 +133,101 @@
         })
 
         function moveUp() {
-            for (var j = 0; j < 4; j++){
-                for (var i = 1; i < 4; i++){
-                    
+            for (var j = 0; j < 4; j++) {
+                for (var i = 1; i < 4; i++) {
+                    if (grid[i][j] != 0) {
+                        var k = i - 1
+                        while (grid[k][j] == 0 && k > 0) {
+                            k--
+                        }
+                        if (grid[k][j] == 0) {
+                            grid[k][j] = grid[i][j]
+                            grid[i][j] = 0
+                        } else if (grid[k][j] == grid[i][j]) {
+                            grid[k][j] *= 2
+                            grid[i][j] = 0
+                        } else {
+                            if (k + 1 < i) {
+                                grid[k + 1][j] = grid[i][j]
+                                grid[i][j] = 0
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function moveDown() {
+            for (var j = 0; j < 4; j++) {
+                for (var i = 2; i >= 0; i--) {
+                    if (grid[i][j] != 0) {
+                        var k = i + 1
+                        while (grid[k][j] == 0 && k < 3) {
+                            k++
+                        }
+                        if (grid[k][j] == 0) {
+                            grid[k][j] = grid[i][j]
+                            grid[i][j] = 0
+                        } else if (grid[k][j] == grid[i][j]) {
+                            grid[k][j] *= 2
+                            grid[i][j] = 0
+                        } else {
+                            if (k - 1 > i) {
+                                grid[k - 1][j] = grid[i][j]
+                                grid[i][j] = 0
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function moveLeft() {
+            for (var i = 0; i < 4; i++) {
+                for (var j = 1; j < 4; j++) {
+                    if (grid[i][j] != 0) {
+                        var k = j - 1
+                        while (grid[i][k] == 0 && k > 0) {
+                            k--
+                        }
+                        if (grid[i][k] == 0) {
+                            grid[i][k] = grid[i][j]
+                            grid[i][j] = 0
+                        } else if (grid[i][k] == grid[i][j]) {
+                            grid[i][k] *= 2
+                            grid[i][j] = 0
+                        } else {
+                            if (k + 1 < j) {
+                                grid[i][k + 1] = grid[i][j]
+                                grid[i][j] = 0
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function moveRight() {
+            for (var i = 0; i < 4; i++) {
+                for (var j = 2; j >= 0; j--) {
+                    if (grid[i][j] != 0) {
+                        var k = j + 1
+                        while (grid[i][k] == 0 && k < 3) {
+                            k++
+                        }
+                        if (grid[i][k] == 0) {
+                            grid[i][k] = grid[i][j]
+                            grid[i][j] = 0
+                        } else if (grid[i][k] == grid[i][j]) {
+                            grid[i][k] *= 2
+                            grid[i][j] = 0
+                        } else {
+                            if (k - 1 > j) {
+                                grid[i][k - 1] = grid[i][j]
+                                grid[i][j] = 0
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -139,8 +258,7 @@
         })
 
 
-
-        
+        startGame()
 
     </script>
 </body>
