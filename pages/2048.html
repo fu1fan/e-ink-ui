@@ -10,56 +10,61 @@
     <style>
         .gametable td {
             text-align: center;
-            width: 40px;
+            width: 45px;
+            height: 25px;
+            border: 1px dotted black;
+            font-family: px12;
+            font-size: 12px;
         }
     </style>
 </head>
 
 <body>
     <div>
-        <span><a href="javascript:backToMain()">&nbsp;&lt;</a> 2048</span>
+        <span><a href="javascript:backToMain()">&nbsp;&lt;</a> 2048 &emsp; &emsp; <span
+                id="start">重置</span></span>
     </div>
-    <div class="row">
-
-
-        <div class="gamearea col-6">
-            <table class="gametable">
-                <tbody>
-                    <tr>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                    </tr>
-                    <tr>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                    </tr>
-                    <tr>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                    </tr>
-                    <tr>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                        <td class="grid">0</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="gamecontrol col-6 text-center">
-            <button id="up">&nbsp;↑&nbsp;</button><br>
-            <div class="mt-1 mb-1">
-                <button id="left">&nbsp;←&nbsp;</button> <button id="right">&nbsp;→&nbsp;</button><br>
+    <div class="container">
+        <div class="row">
+            <div class="gamearea col-6">
+                <table class="gametable">
+                    <tbody>
+                        <tr>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                        </tr>
+                        <tr>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                        </tr>
+                        <tr>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                        </tr>
+                        <tr>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                            <td class="grid">0</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <button id="down">&nbsp;↓&nbsp;</button><br>
-            <button id="start" class="mt-2">重置</button>
+            <div class="gamecontrol col-6 text-center">
+                <button id="up">&nbsp;↑&nbsp;</button><br>
+                <div class="mt-1 mb-1">
+                    <button id="left">&nbsp;←&nbsp;</button> <button id="right">&nbsp;→&nbsp;</button><br>
+                </div>
+                <button id="down">&nbsp;↓&nbsp;</button><br>
+            </div>
         </div>
+
     </div>
     <script src="./src/jquery.min.js"></script>
     <script src="./src/piapi.js"></script>
