@@ -56,6 +56,8 @@ if __name__ == "__main__":
 
     # plugins
     for plugin_dir in os.listdir("plugins"):
+        if not os.path.isdir(f"plugins/{plugin_dir}"):
+            continue
         try:
             env.plugins[plugin_dir] = importlib.import_module(f"plugins.{plugin_dir}.main").Plugin(env)
             env.Logger.info(f"插件加载：{plugin_dir}")
@@ -65,6 +67,8 @@ if __name__ == "__main__":
 
     # themes
     for theme_dir in os.listdir("themes"):
+        if not os.path.isdir(f"themes/{theme_dir}"):
+            continue
         try:
             env.themes[theme_dir] = importlib.import_module(f"themes.{theme_dir}.main").Theme(env)
             env.Logger.info(f"主题加载: {theme_dir}")
@@ -74,6 +78,8 @@ if __name__ == "__main__":
 
     # apps
     for app_dir in os.listdir("applications"):
+        if not os.path.isdir(f"applications/{app_dir}"):
+            continue
         try:
             env.apps[app_dir] = importlib.import_module(f"applications.{app_dir}.main").Application(env)
             env.Logger.info(f"应用加载: {app_dir}")
