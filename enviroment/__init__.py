@@ -15,6 +15,13 @@ from .touchscreen import Clicked as _Clicked, \
 from .touchscreen.events import SlideX as _SlideX
 import os as _os
 from framework.struct import Base as _Base
+from system import configurator
+
+
+example_config = {
+    "theme": "default",
+    "docker": ["天气"]
+}
 
 from enviroment.drivers import epd2in9_V2 as _epd2in9_V2, icnt86
 
@@ -221,6 +228,11 @@ class Env:
             self.Pool.add(i.shutdown)
         _time.sleep(2)
         self.Screen.quit()
+
+    def start(self):
+        self.now_theme = self.config.read("theme")
+        self.Now = self.themes[self.now_theme]
+        self.Now.active()
 
     def poweroff(self):
         self.Logger.info("关机")
