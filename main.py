@@ -25,8 +25,7 @@ example_config = {
 }
 
 
-
-if __name__ == "__main__":
+def main_thread():
     time.sleep(0.5)
     print("Running In Develop Mode")
 
@@ -51,7 +50,7 @@ if __name__ == "__main__":
         load_lock.wait()
 
     env.Pool.add(opening)
-    
+
     touch_recoder_dev = enviroment.touchscreen.TouchRecoder()
     touch_recoder_old = enviroment.touchscreen.TouchRecoder()
 
@@ -97,10 +96,6 @@ if __name__ == "__main__":
     env.Now = env.themes[env.now_theme]
     env.Now.active()
 
-
-
     while 1:  # 据说 while 1 的效率比 while True 高
         env.Touch.icnt_scan(touch_recoder_dev, touch_recoder_old)
         env.TouchHandler.handle(touch_recoder_dev, touch_recoder_old)
-
-
