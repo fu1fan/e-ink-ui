@@ -9,14 +9,8 @@ from PIL import Image
 
 import enviroment
 
-'''
-更好的错误处理机制
 
-book update函数支持全局刷新
-'''
-
-
-def main_thread():
+if __name__ == "__main__":
     time.sleep(0.5)
     print("Running In Develop Mode")
 
