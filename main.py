@@ -19,18 +19,10 @@ Docker
 book update函数支持全局刷新
 '''
 
-example_config = {
-    "theme": "default",
-    "update_tdduudf7": 1
-}
-
 
 def main_thread():
     time.sleep(0.5)
     print("Running In Develop Mode")
-
-    configurator_main = configurator.Configurator()
-    configurator_main.check(example_config, True)
 
     env = enviroment.Env()
 
@@ -92,9 +84,7 @@ def main_thread():
 
     load_lock.wait()
 
-    env.now_theme = configurator_main.read("theme")
-    env.Now = env.themes[env.now_theme]
-    env.Now.active()
+    env.start()
 
     while 1:  # 据说 while 1 的效率比 while True 高
         env.Touch.icnt_scan(touch_recoder_dev, touch_recoder_old)
