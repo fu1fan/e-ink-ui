@@ -28,6 +28,9 @@ from enviroment.drivers import epd2in9_V2 as _epd2in9_V2, icnt86
 
 class Env:
     def __init__(self):
+        self.config = configurator.Configurator()
+        self.config.check(example_config, True)
+
         # locks
         self.display_lock = _threading.Lock()
 
