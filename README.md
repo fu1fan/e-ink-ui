@@ -1,5 +1,10 @@
 # E-Ink UI
 
+## ⚠️警告
+想要跟踪最新进度，请访问 https://gitee.com/fu1fan/e-ink-ui.</br>
+由于国内网络问题优先在gitee推送
+
+
 ## 介绍
 这是一个由python编写，基于树莓派Zero W的水墨屏天气时钟。
 这个仓库是対原仓库[eink-clock-mP](https://gitee.com/fu1fan/eink-clock-mP)的重构，提高了运行效率和代码规范。
